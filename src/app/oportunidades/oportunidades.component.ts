@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { Oportunidade } from './oportunidade.model';
 
 @Component({
   selector: 'app-oportunidades',
@@ -7,9 +10,31 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OportunidadesComponent implements OnInit {
 
+ // estagios : any
+ oportunidades = [
+   new Oportunidade('SMN','09/10/2018','Estágio Sup.','Diurno - 6hrs','Tecnologia','Não Candidatado'),
+   new Oportunidade('SMN','09/10/2018','Estágio Sup.','Diurno - 6hrs','Tecnologia','Não Candidatado'),
+   new Oportunidade('Irroba','11/11/2018','Estágio','Diurno - 6hrs','Tecnologia','Não Candidatado'),
+   new Oportunidade('Irroba','11/11/2018','Estágio','Diurno - 6hrs','Tecnologia','Não Candidatado'),
+   new Oportunidade('Audtax','15/12/2018','Estágio','Diurno - 6hrs','Tecnologia','Não Candidatado'),
+   new Oportunidade('Audtax','15/12/2018','Estágio','Diurno - 6hrs','Tecnologia','Não Candidatado')
+ ]
+
+ /*public empresa: String,
+                public dtafim: String,
+                public tipo: String,
+                public periodo: String,
+                public area: string,
+                public status: string*/
+
+  /*constructor(private http:HttpClient,
+              private router: Router) { }*/
   constructor() { }
 
   ngOnInit() {
+  /*  this.http.get('http://localhost:3000/estagio').subscribe(dados => {
+      this.estagios = dados;
+    })*/
   }
 
 }

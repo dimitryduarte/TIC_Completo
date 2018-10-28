@@ -1,4 +1,6 @@
-<div class="w3-bar w3-black">
-  <a [routerLink]="['/home']" class="w3-bar-item w3-button"> Home </a>
-  <a [routerLink]="['/oportunidades']" class="w3-bar-item w3-button"> Oportunidades </a>
+<div style="background-color: #344f8a; color: white;"class="w3-bar w3-border w3-xlarge">
+  <img class="w3-bar-item w3-button" [routerLink]="['/home']" style="width: 10%; padding-top: 1%;" src="../assets/img/logo_facef.png" alt="UniFacef">
+  <a style="color: white;" [routerLink]="['/oportunidades']" class="w3-bar-item w3-button"><i class="fa fa-search"></i> Vagas </a>
+  <a style="background-color: #344f8a; color: white;" [routerLink]="['/edit-curriculo']" class="w3-bar-item w3-button w3-right"><i class="fa fa-user"></i> Currículo </a>
 </div>
+
