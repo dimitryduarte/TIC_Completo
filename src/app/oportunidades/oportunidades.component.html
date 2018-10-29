@@ -5,7 +5,7 @@
     <form class="w3-container w3-card w3-white">
         <div class="w3-row-padding w3-section">
             <div class="w3-third">
-              <input class="w3-input" type="text" placeholder="Empresa">
+              <input onkeyup="searchEmpresa();" id="empresa" class="w3-input" type="text" placeholder="Empresa">
             </div>
             <div class="w3-third">
               <input class="w3-input" type="text" placeholder="Data Limite">
@@ -41,7 +41,7 @@
       </form>      
 </div>
 <div style="padding-top: 2%;" class="w3-container w3-animate-right">
-<table class="w3-table w3-striped">
+<table id="listaOportunidades" class="w3-table w3-striped">
   <tr>
     <th>Empresa</th>
     <th>Data Valid.</th>
@@ -65,15 +65,6 @@
 </table>
 </div>
 
-<div id="modalNotificacao" class="w3-modal">
-    <div class="w3-modal-content">
-      <div class="w3-container">
-        <span onclick="document.getElementById('modalNotificacao').style.display='none'" class="w3-button w3-display-topright">&times;</span>              
-
-      </div>
-    </div>
-  </div>
-
 
 <div id="id01" class="w3-modal">
     <div class="w3-modal-content w3-card-4">
@@ -96,3 +87,23 @@
       </footer>
     </div>
   </div>
+
+  <script>
+function searchEmpresa() {
+    var input, filter, table, tr, td, i;
+    input = document.getElementById("empresa");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("listaOportunidades");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[0];
+      if (td) {
+        if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
+  </script>

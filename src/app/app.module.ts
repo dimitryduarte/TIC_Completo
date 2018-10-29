@@ -8,6 +8,12 @@ import { HomeComponent } from './home/home.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { OportunidadesComponent } from './oportunidades/oportunidades.component';
+import { CurriculoComponent } from './curriculo/curriculo.component';
+import { CurriculoEditComponent } from './curriculo-edit/curriculo-edit.component';
+import { VagaComponent } from './vaga/vaga.component';
+import { VagaEditComponent } from './vaga-edit/vaga-edit.component';
+import { EmpresaEditComponent } from './empresa-edit/empresa-edit.component';
+import { CandidatosComponent } from './candidatos/candidatos.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +22,13 @@ import { OportunidadesComponent } from './oportunidades/oportunidades.component'
     HomeComponent,
     HeaderComponent,
     FooterComponent,
-    OportunidadesComponent
+    OportunidadesComponent,
+    CurriculoComponent,
+    CurriculoEditComponent,
+    VagaComponent,
+    VagaEditComponent,
+    EmpresaEditComponent,
+    CandidatosComponent
   ],
   imports: [
     BrowserModule,
