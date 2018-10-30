@@ -10,14 +10,14 @@ import { Oportunidade } from './oportunidade.model';
 })
 export class OportunidadesComponent implements OnInit {
 
- // estagios : any
+ // oportunidades : any
  oportunidades = [
    new Oportunidade('SMN','09/10/2018','Estágio Sup.','Diurno - 6hrs','Tecnologia','Não Candidatado'),
    new Oportunidade('SMN','09/10/2018','Estágio Sup.','Diurno - 6hrs','Tecnologia','Não Candidatado'),
    new Oportunidade('Irroba','11/11/2018','Estágio','Diurno - 6hrs','Tecnologia','Não Candidatado'),
    new Oportunidade('Irroba','11/11/2018','Estágio','Diurno - 6hrs','Tecnologia','Não Candidatado'),
    new Oportunidade('Audtax','15/12/2018','Estágio','Diurno - 6hrs','Tecnologia','Não Candidatado'),
-   new Oportunidade('Audtax','15/12/2018','Estágio','Diurno - 6hrs','Tecnologia','Não Candidatado')
+   new Oportunidade('Audtax','15/12/2018','Estágio','Diurno - 6hrs','Tecnologia','Candidatado')
  ]
 
  /*public empresa: String,
@@ -33,7 +33,7 @@ export class OportunidadesComponent implements OnInit {
 
   ngOnInit() {
   /*  this.http.get('http://localhost:3000/estagio').subscribe(dados => {
-      this.estagios = dados;
+      this.oportunidades = dados;
     })*/
   }
   
