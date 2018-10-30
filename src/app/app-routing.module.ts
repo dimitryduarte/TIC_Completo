@@ -6,6 +6,7 @@ import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './login/login.component';
 import { CurriculoComponent } from './curriculo/curriculo.component';
+import { VagaComponent } from './vaga/vaga.component';
 
 const routes: Routes = [
                           {path: 'header', component: HeaderComponent},
@@ -13,7 +14,8 @@ const routes: Routes = [
                           {path: 'home', component: HomeComponent},
                           {path: 'login', component: LoginComponent},
                           {path: 'oportunidades', component: OportunidadesComponent},
-                          {path: 'curriculo', component: CurriculoComponent},                          
+                          {path: 'curriculo', component: CurriculoComponent},
+                          {path: 'vaga', component: VagaComponent},                         
                           {path: '', component: HomeComponent}
 ];
 

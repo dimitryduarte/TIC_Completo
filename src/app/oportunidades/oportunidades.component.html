@@ -58,7 +58,7 @@
   <td>{{a.periodo}}</td>
   <td>{{a.area}}</td>
   <td>{{a.status}}</td>
-  <td><button style="background-color: #344f8a; color: white;" class="w3-button" (click)="detalharOportunidade(a._id)"> Ver mais </button></td>
+  <td><button style="background-color: #344f8a; color: white;" class="w3-button" [routerLink]="['/vaga']"> Ver mais </button></td>
  <!--  <td><button class="w3-button w3-black" (click)="removeEstagio(a._id)"> Remover </button></td>
   <td><button class="w3-button w3-black" (click)="atualizaEstagio(a._id)"> Atualizar </button></td>    -->
 </tr>
