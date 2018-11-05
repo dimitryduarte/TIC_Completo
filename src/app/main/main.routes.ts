@@ -8,6 +8,9 @@ import { CurriculoComponent } from "./curriculo/curriculo.component";
 import { VagaComponent } from "./vaga/vaga.component";
 import { NgModule } from "@angular/core";
 import { EmpresaComponent } from "./empresa/empresa.component";
+import { VagaEditComponent } from "./vaga/vaga-edit/vaga-edit.component";
+import { CurriculoEditComponent } from "./curriculo/curriculo-edit/curriculo-edit.component";
+import { EmpresaEditComponent } from "./empresa/empresa-edit/empresa-edit.component";
 
 
 export const MAIN_ROUTES: Routes = [
@@ -19,7 +22,10 @@ export const MAIN_ROUTES: Routes = [
             { path: 'oportunidades', component: OportunidadesComponent },
             { path: 'curriculo', component: CurriculoComponent },
             { path: 'vaga', component: VagaComponent },
-            { path: 'empresa', component: EmpresaComponent }
+            { path: 'vaga-edit', component: VagaEditComponent },
+            { path: 'curriculo-edit', component: CurriculoEditComponent },
+            { path: 'empresa', component: EmpresaComponent },
+            { path: 'empresa-edit', component: EmpresaEditComponent }
         ]
     }
 ];
