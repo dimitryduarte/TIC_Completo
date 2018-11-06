@@ -1,0 +1,26 @@
+{
+  	"compilerOptions": {
+		"target": "es6",
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"sourceMap": true,
+		"outDir": "./build",
+		"jsx": "react",
+		"removeComments": true,
+		"strict": true,
+		"pretty": true,
+		"noImplicitAny": true,
+		"esModuleInterop": true,
+		"typeRoots" : [
+			"./node_modules/@types",
+			"./typings"
+		]
+	},
+	"exclude": [
+		"node_modules",
+		"**/*.spec.ts"
+	],
+	"include": [
+		"./**/*"
+	]
+}
