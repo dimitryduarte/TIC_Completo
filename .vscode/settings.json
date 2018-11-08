@@ -1,0 +1,14 @@
+{
+    "css.lint.duplicateProperties": "error",
+    "explorer.confirmDelete": false,
+	"explorer.confirmDragAndDrop": false,
+	"editor.detectIndentation": true,
+    "editor.tabSize": 4,
+    "editor.insertSpaces": false,
+    "files.encoding": "utf8",
+    "files.autoSave": "onFocusChange",
+    "git.ignoreLimitWarning": true,	
+    "git.ignoreMissingGitWarning": true,	
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "typescript.tsdk": "./solution/node_modules/typescript/lib"
+}

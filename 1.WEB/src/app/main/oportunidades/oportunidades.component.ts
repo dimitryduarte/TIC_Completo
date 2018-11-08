@@ -37,22 +37,6 @@ export class OportunidadesComponent implements OnInit {
     })*/
   }
   
-   searchEmpresa() {
-    var input, filter, table, tr, td, i;
-    input = document.getElementById("empresa");
-    filter = input.value.toUpperCase();
-    table = document.getElementById("listaOportunidades");
-    tr = table.getElementsByTagName("tr");
-    for (i = 0; i < tr.length; i++) {
-      td = tr[i].getElementsByTagName("td")[0];
-      if (td) {
-        if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-          tr[i].style.display = "";
-        } else {
-          tr[i].style.display = "none";
-        }
-      }
-    }
-  }
+   
 
 }
