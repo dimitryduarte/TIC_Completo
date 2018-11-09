@@ -1,5 +1,4 @@
 import ReturnMessage from "../Commom/ReturnMessage";
-import ReturnResultDB from "../Commom/ReturnResultDB";
 import TipoEnderecoDto from "./Dtos/TipoEnderecoDto";
 import TipoEnderecoRepository from "../../3.Infra/Repositories/TipoEnderecoRepository";
 
@@ -10,7 +9,7 @@ export default class TipoenderecoService
         if(dto.isValid(true).Content)
             return await new TipoEnderecoRepository().Get(dto.id_tipo_endereco);
 
-        return new ReturnMessage<TipoEnderecoDto>(400, "O parâmetro informado não foi aceito", false, new ReturnResultDB<TipoEnderecoDto>([]));
+        return new ReturnMessage<TipoEnderecoDto>(400, "O parâmetro informado não foi aceito", false);
     }
 
     public async Post(dto: TipoEnderecoDto): Promise<ReturnMessage<null>>

@@ -1,5 +1,4 @@
 import ReturnMessage from "../Commom/ReturnMessage";
-import ReturnResultDB from "../Commom/ReturnResultDB";
 import FiltroDto from "./Dtos/FiltroDto";
 import FiltroRepository from "../../3.Infra/Repositories/FiltroRepository";
 
@@ -10,7 +9,7 @@ export default class FiltroService
         if(dto.isValid(true).Content)
             return await new FiltroRepository().Get(dto.id_filtro);
 
-        return new ReturnMessage<FiltroDto>(400, "O parâmetro informado não foi aceito", false, new ReturnResultDB<FiltroDto>([]));
+        return new ReturnMessage<FiltroDto>(400, "O parâmetro informado não foi aceito", false);
     }
 
     public async Post(dto: FiltroDto): Promise<ReturnMessage<null>>

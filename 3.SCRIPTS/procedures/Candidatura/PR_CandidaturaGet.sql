@@ -4,11 +4,11 @@ CREATE OR REPLACE FUNCTION PR_CandidaturaGet(
 	vIdCandidatura 	INTEGER = NULL
 ) RETURNS JSON AS $$
 DECLARE
-	vResult JSON;
+	vLista JSON;
 	vTotalLinhas INTEGER;
 BEGIN
 
-	vResult := (
+	vLista := (
 		SELECT  COALESCE(json_agg(candidatura), '[]')
 			FROM (
 				SELECT  CAND.id_candidatura,
@@ -23,7 +23,7 @@ BEGIN
 					OR (vIdOportunidade IS NULL 
 						AND vIdContato IS NULL 
 						AND vIdCandidatura IS NULL 
-						AND fg_status)
+						AND fg_status = '0')
 			) candidatura
 	);
 
@@ -36,11 +36,11 @@ BEGIN
 				OR (vIdOportunidade IS NULL 
 					AND vIdContato IS NULL 
 					AND vIdCandidatura IS NULL 
-					AND fg_status)
+					AND fg_status = '0')
 	);
 
 	RETURN json_build_object(
-		'result', vResult,
+		'lista', vLista,
 		'totalLinhas', vTotalLinhas
 	);
 

@@ -1,12 +1,12 @@
-CREATE OR REPLACE FUNCTION PR_TipoTelefoneGet(
+CREATE OR REPLACE FUNCTION PR_TipoTelefoneGet (
 	vIdTipoTelefone INTEGER = NULL
 ) RETURNS JSON AS $$
 DECLARE
-	vResult JSON;
+	vLista JSON;
 	vTotalLinhas INTEGER;
 BEGIN
 
-	vResult := (
+	vLista := (
 		SELECT  COALESCE(json_agg(telefone), '[]')
 			FROM (
 				SELECT  id_tipo_telefone,
@@ -24,9 +24,9 @@ BEGIN
 				OR (TTEL.fg_status = '1' AND vIdTipoTelefone IS NULL)
 	);
 
-	RETURN json_build_object(
-		'result', vResult,
-		'totalLinhas', vTotalLinhas
+	RETURN json_build_object (
+		'Lista', vLista,
+		'TotalLinhas', vTotalLinhas
 	);
 
 END;

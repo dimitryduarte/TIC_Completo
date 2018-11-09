@@ -1,6 +1,5 @@
 import Connection from "../Connections/PostgreSQLConnection";
 import ReturnMessage from "../../2.Domain/Commom/ReturnMessage";
-import ReturnResultDB from "../../2.Domain/Commom/ReturnResultDB";
 import TelefoneEmpresaDto from "../../2.Domain/TelefoneEmpresa/Dtos/TelefoneEmpresaDto";
 
 export default class TelefoneEmpresaRepository extends Connection

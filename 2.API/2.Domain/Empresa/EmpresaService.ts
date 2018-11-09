@@ -1,5 +1,4 @@
 import ReturnMessage from "../Commom/ReturnMessage";
-import ReturnResultDB from "../Commom/ReturnResultDB";
 import EmpresaDto from "./Dtos/EmpresaDto";
 import EmailEmpresaDto from "../EmailEmpresa/Dtos/EmailEmpresaDto";
 import TelefoneEmpresaDto from "../TelefoneEmpresa/Dtos/TelefoneEmpresaDto";
@@ -16,7 +15,7 @@ export default class EmpresaService
         if(dto.isValid(true).Content)
             return await new EmpresaRepository().Get(dto.id_empresa);
 
-        return new ReturnMessage<EmpresaDto>(400, "O parâmetro informado não foi aceito", false, new ReturnResultDB<EmpresaDto>([]));
+        return new ReturnMessage<EmpresaDto>(400, "O parâmetro informado não foi aceito", false);
     }
 
     public async Post(dto: EmpresaDto): Promise<ReturnMessage<null>>
@@ -27,13 +26,13 @@ export default class EmpresaService
 
         // Salva Informações Básicas do Empresa
         let rEmpresa = await new EmpresaRepository().Post(dto);
-        if(rEmpresa.Result.lista == null)
+        if(rEmpresa.Lista == null)
             return new ReturnMessage<null>(rEmpresa.StatusCode, rEmpresa.Message, false); 
 
-        if (rEmpresa.Result.lista.length == 0)
+        if (rEmpresa.Lista.length == 0)
             return new ReturnMessage<null>(rEmpresa.StatusCode, rEmpresa.Message, false);
 
-        Object.assign(dto, rEmpresa.Result.lista[0]);
+        Object.assign(dto, rEmpresa.Lista[0]);
 
         return await this.SaveAnotherInfo(dto);
     }

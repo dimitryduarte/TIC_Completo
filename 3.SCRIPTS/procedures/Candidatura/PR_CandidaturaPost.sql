@@ -3,10 +3,11 @@ CREATE OR REPLACE FUNCTION PR_CandidaturaPost(
 	vIdContato      INTEGER
 ) RETURNS JSON AS $$
 DECLARE
-	vResult INTEGER := 0;
+	vContent INTEGER := 0;
+	vMensagem TEXT := 'Candidatura cadastrada';
 BEGIN
 
-	IF NOT EXISTS(SELECT 1
+	IF NOT EXISTS (SELECT 1
 				FROM public."tbCandidatura" AS CAND
 				WHERE CAND.id_contato = vIdContato
                     AND CAND.id_oportunidade = vIdOportunidade)
@@ -19,12 +20,14 @@ BEGIN
 
 		ELSE
 
-			vResult := 1;
+			vContent := 1;
+			vMensagem := 'O contato já está cadastrado';
 			
 		END IF;
 	
 	RETURN json_build_object(
-		'result', vResult
+		'content', vContent,
+		'mensagem', vMensagem
 	);
 
 END;

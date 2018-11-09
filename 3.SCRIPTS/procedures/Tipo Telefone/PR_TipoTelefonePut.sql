@@ -1,12 +1,13 @@
-CREATE OR REPLACE FUNCTION PR_TipoTelefonePut(
+CREATE OR REPLACE FUNCTION PR_TipoTelefonePut (
     vIdTipoTelefone INTEGER,
     vStrDescricao   TEXT
 ) RETURNS JSON AS $$
 DECLARE
-    vResult INTEGER := 0;
+    vContent BOOLEAN := 'true';
+    vMensagem TEXT := 'Tipo de Telefone alterado';
 BEGIN
 
-    IF EXISTS(SELECT 1
+    IF EXISTS (SELECT 1
                 FROM public."tbTipoTelefone" AS TTEL
                 WHERE TTEL.id_tipo_telefone = vIdTipoTelefone)
         THEN
@@ -17,12 +18,14 @@ BEGIN
                 
         ELSE
         
-            vResult := 1;
+            vContent := 'false';
+            vMensagem := 'Tipo de Telefone não encontrado';
             
         END IF;
         
-    RETURN json_build_object(
-        'result', vResult
+    RETURN json_build_object (
+        'Content', vContent,
+        'Message', vMensagem
     );
 
 END;

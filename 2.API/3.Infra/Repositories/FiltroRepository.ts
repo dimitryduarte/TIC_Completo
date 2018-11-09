@@ -1,6 +1,5 @@
 import Connection from "../Connections/PostgreSQLConnection";
 import ReturnMessage from "../../2.Domain/Commom/ReturnMessage";
-import ReturnResultDB from "../../2.Domain/Commom/ReturnResultDB";
 import FiltroDto from "../../2.Domain/Filtro/Dtos/FiltroDto";
 
 export default class FiltroRepository extends Connection

@@ -1,7 +1,6 @@
 import Bluebird from "bluebird";
 import PgPromise from "pg-promise";
 import ReturnMessage from "../../2.Domain/Commom/ReturnMessage";
-import ReturnResultDB from "../../2.Domain/Commom/ReturnResultDB";
 
 export default class PostgreSQLConnection
 {        
@@ -58,18 +57,17 @@ export default class PostgreSQLConnection
     {
         try
         {
-            let returnMessage: ReturnMessage<null> = new ReturnMessage<null>(200, "", false);
+            let RM: ReturnMessage<null> = new ReturnMessage<null>(200, "", false);
 
-            await this.db.connect();
             await this.db.proc(this.procedure, this.values.length > 1 ? this.values : this.values[0])
                 .then((data) => {
-                    Object.assign(returnMessage, data[this.procedure.toLocaleLowerCase()]);
+                    Object.assign(RM, data[this.procedure.toLocaleLowerCase()]);
                 })
                 .catch((error) => { 
-                    returnMessage.updateStatus(400, error.message, false);
+                    RM.updateStatus(400, error.message, false);
                 });
 
-            return returnMessage;
+            return RM;
         }
         catch(ex)
         {
@@ -81,36 +79,32 @@ export default class PostgreSQLConnection
     {
         try
         {
-            let returnMessage: ReturnMessage<T> = new ReturnMessage<T>(400, "", false, new ReturnResultDB<T>([]));
+            let RM: ReturnMessage<T> = new ReturnMessage<T>(400, "FALHA", false);
 
-            await this.db.connect();
             await this.db.proc(this.procedure, this.values.length > 1 ? this.values : this.values[0])
                 .then((data) => {
-                    let obj: ReturnResultDB<T> = new ReturnResultDB<T>();   
-                    Object.assign(returnMessage.Result, data[this.procedure.toLocaleLowerCase()]);
+                    Object.assign(RM, data[this.procedure.toLocaleLowerCase()]);
 
-                    if(returnMessage.Result.lista != null)
+                    RM.Lista.forEach(function(o, i)
                     {
-                        returnMessage.Result.lista.forEach(function(o, i)
-                        {
-                            if(o != null)
-                                for (const k in o)
-                                    if(typeof(o[k]) == "string" && returnMessage.Result.lista != null)
-                                        Object.defineProperty(returnMessage.Result.lista[i], k, { 
-                                            value : o[k].toString().replace(/(')/g, "") 
-                                        });
-                        });
-                    }
+                        for (const k in o)
+                            if(typeof(o[k]) == "string")
+                                Object.defineProperty(RM.Lista[i], k, { 
+                                    value : o[k].toString().replace(/(')/g, "") 
+                                });
+                    });
+
+                    RM.updateStatus(200, "SUCESSO", true, RM.Lista, RM.TotalLinhas);
                 })
                 .catch((error) => { 
-                    returnMessage.updateStatus(400, error.message, false, new ReturnResultDB<T>());
+                    RM.updateStatus(400, error.message, false);
                 });
 
-            return returnMessage;
+            return RM;
         }
         catch(ex)
         {
-            return new ReturnMessage<T>(400, ex.toString(), false, new ReturnResultDB<T>());
+            return new ReturnMessage<T>(400, ex.toString(), false);
         }
     }
 }

@@ -1,6 +1,5 @@
 import Connection from "../Connections/PostgreSQLConnection";
 import ReturnMessage from "../../2.Domain/Commom/ReturnMessage";
-import ReturnResultDB from "../../2.Domain/Commom/ReturnResultDB";
 import CandidaturaDto from "../../2.Domain/Candidatura/Dtos/CandidaturaDto";
 
 export default class CandidaturaRepository extends Connection

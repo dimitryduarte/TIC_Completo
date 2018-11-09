@@ -1,5 +1,4 @@
 import ReturnMessage from "../Commom/ReturnMessage";
-import ReturnResultDB from "../Commom/ReturnResultDB";
 import TipoTelefoneDto from "./Dtos/TipoTelefoneDto";
 import TipoTelefoneRepository from "../../3.Infra/Repositories/TipoTelefoneRepository";
 
@@ -10,7 +9,7 @@ export default class TipotelefoneService
         if(dto.isValid(true).Content)
             return await new TipoTelefoneRepository().Get(dto.id_tipo_telefone);
 
-        return new ReturnMessage<TipoTelefoneDto>(400, "O parâmetro informado não foi aceito", false, new ReturnResultDB<TipoTelefoneDto>([]));
+        return new ReturnMessage<TipoTelefoneDto>(400, "O parâmetro informado não foi aceito", false);
     }
 
     public async Post(dto: TipoTelefoneDto): Promise<ReturnMessage<null>>

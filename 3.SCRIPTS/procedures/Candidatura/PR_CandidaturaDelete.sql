@@ -2,10 +2,11 @@ CREATE OR REPLACE FUNCTION PR_CandidaturaDelete(
 	vIdCandidatura INTEGER
 ) RETURNS JSON AS $$
 DECLARE
-    vResult INTEGER := 0;
+    vContent INTEGER := 0;
+    vMensagem TEXT := 'Candidatura deletada';
 BEGIN
 
-    IF EXISTS(SELECT 1
+    IF EXISTS (SELECT 1
                 FROM public."tbCandidatura" AS CAND
                 WHERE CAND.id_candidatura = vIdCandidatura)
         THEN
@@ -16,12 +17,14 @@ BEGIN
                 
         ELSE
         
-            vResult := 1;
-            
+            vContent := 1;
+            vMensagem := 'Candidatura não encontrada';
+
         END IF;
         
     RETURN json_build_object(
-        'result', vResult
+        'content', vContent,
+        'mensagem', vMensagem
     );
 
 END;

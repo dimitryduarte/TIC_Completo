@@ -1,5 +1,4 @@
 import ReturnMessage from "../../2.Domain/Commom/ReturnMessage";
-import ReturnResultDB from "../../2.Domain/Commom/ReturnResultDB";
 import TipoOportunidadeDto from "./Dtos/TipoOportunidadeDto";
 import TipoOportunidadeRepository from "../../3.Infra/Repositories/TipoOportunidadeRepository";
 
@@ -10,7 +9,7 @@ export default class TipoOportunidadeService
         if(dto.isValid(true).Content)
             return await new TipoOportunidadeRepository().Get(dto.id_tipo_oportunidade);
 
-        return new ReturnMessage<TipoOportunidadeDto>(400, "O parâmetro informado não foi aceito", false, new ReturnResultDB<TipoOportunidadeDto>([]));
+        return new ReturnMessage<TipoOportunidadeDto>(400, "O parâmetro informado não foi aceito", false);
     }
 
     public async Post(dto: TipoOportunidadeDto): Promise<ReturnMessage<null>>

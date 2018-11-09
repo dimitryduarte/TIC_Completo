@@ -1,6 +1,5 @@
 import Connection from "../Connections/PostgreSQLConnection";
 import ReturnMessage from "../../2.Domain/Commom/ReturnMessage";
-import ReturnResultDB from "../../2.Domain/Commom/ReturnResultDB";
 import TipoEmailDto from "../../2.Domain/TipoEmail/Dtos/TipoEmailDto";
 
 export default class TipoEmailRepository extends Connection

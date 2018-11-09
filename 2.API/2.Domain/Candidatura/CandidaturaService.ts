@@ -1,5 +1,4 @@
 import ReturnMessage from "../../2.Domain/Commom/ReturnMessage";
-import ReturnResultDB from "../../2.Domain/Commom/ReturnResultDB";
 import CandidaturaDto from "./Dtos/CandidaturaDto";
 import CandidaturaRepository from "../../3.Infra/Repositories/CandidaturaRepository";
 
@@ -10,7 +9,7 @@ export default class CandidaturaService
         if(dto.isValid(true).Content)
             return await new CandidaturaRepository().Get(dto.id_oportunidade, dto.id_candidatura, dto.id_candidatura);
         
-        return new ReturnMessage<CandidaturaDto>(400, "O parâmetro informado não foi aceito", false, new ReturnResultDB<CandidaturaDto>([]));
+        return new ReturnMessage<CandidaturaDto>(400, "O parâmetro informado não foi aceito", false);
     }
 
     public async Post(dto: CandidaturaDto): Promise<ReturnMessage<null>>

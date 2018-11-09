@@ -1,5 +1,4 @@
 import ReturnMessage from "../Commom/ReturnMessage";
-import ReturnResultDB from "../Commom/ReturnResultDB";
 import EnderecoEmpresaDto from "./Dtos/EnderecoEmpresaDto";
 import EnderecoEmpresaRepository from "../../3.Infra/Repositories/EnderecoEmpresaRepository";
 
@@ -10,7 +9,7 @@ export default class EnderecoEmpresaService
         if(dto.isValid(true).Content)
             return await new EnderecoEmpresaRepository().Get(dto.id_empresa, dto.id_endereco);
         
-        return new ReturnMessage<EnderecoEmpresaDto>(400, "O parâmetro informado não foi aceito", false, new ReturnResultDB<EnderecoEmpresaDto>([]));
+        return new ReturnMessage<EnderecoEmpresaDto>(400, "O parâmetro informado não foi aceito", false);
     }
 
     public async Post(dto: EnderecoEmpresaDto): Promise<ReturnMessage<null>>

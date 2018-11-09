@@ -1,5 +1,4 @@
 import ReturnMessage from "../Commom/ReturnMessage";
-import ReturnResultDB from "../Commom/ReturnResultDB";
 import TipoEmailDto from "./Dtos/TipoEmailDto";
 import TipoEmailRepository from "../../3.Infra/Repositories/TipoEmailRepository";
 
@@ -10,7 +9,7 @@ export default class TipoemailService
         if(dto.isValid(true).Content)
             return await new TipoEmailRepository().Get(dto.id_tipo_email);
 
-        return new ReturnMessage<TipoEmailDto>(400, "O parâmetro informado não foi aceito", false, new ReturnResultDB<TipoEmailDto>([]));
+        return new ReturnMessage<TipoEmailDto>(400, "O parâmetro informado não foi aceito", false);
     }
 
     public async Post(dto: TipoEmailDto): Promise<ReturnMessage<null>>

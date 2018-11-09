@@ -1,6 +1,5 @@
 import Connection from "../Connections/PostgreSQLConnection";
 import ReturnMessage from "../../2.Domain/Commom/ReturnMessage";
-import ReturnResultDB from "../../2.Domain/Commom/ReturnResultDB";
 import EnderecoEmpresaDto from "../../2.Domain/EnderecoEmpresa/Dtos/EnderecoEmpresaDto";
 
 export default class EnderecoEmpresaRepository extends Connection

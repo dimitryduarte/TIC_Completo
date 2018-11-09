@@ -1,6 +1,5 @@
 import Connection from "../Connections/PostgreSQLConnection";
 import ReturnMessage from "../../2.Domain/Commom/ReturnMessage";
-import ReturnResultDB from "../../2.Domain/Commom/ReturnResultDB";
 import EmailContatoDto from "../../2.Domain/EmailContato/Dtos/EmailContatoDto";
 
 export default class EmailContatoRepository extends Connection
