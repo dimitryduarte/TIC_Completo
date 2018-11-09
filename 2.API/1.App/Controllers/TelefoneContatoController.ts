@@ -1,5 +1,4 @@
 import ReturnMessage from "../../2.Domain/Commom/ReturnMessage";
-import ReturnResultDB from "../../2.Domain/Commom/ReturnResultDB";
 import TelefoneContatoDto from "../../2.Domain/TelefoneContato/Dtos/TelefoneContatoDto";
 import TelefoneContatoService from "../../2.Domain/TelefoneContato/TelefoneContatoService";
 

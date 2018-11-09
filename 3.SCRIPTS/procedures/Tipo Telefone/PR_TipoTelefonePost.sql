@@ -19,7 +19,7 @@ BEGIN
 		ELSE
 
 			vContent := 'false';
-			vMensagem := 'Tipo de Telefone não encontrado';
+			vMensagem := 'Tipo de Telefone já cadastrado';
 			
 		END IF;
 	

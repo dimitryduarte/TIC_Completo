@@ -12,7 +12,7 @@ BEGIN
         THEN
         
             UPDATE public."tbTipoTelefone"
-                SET fg_status = '0'
+                SET fg_status = 'false'
                 WHERE id_tipo_telefone = vIdTipoTelefone;
                 
         ELSE

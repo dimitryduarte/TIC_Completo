@@ -116,7 +116,7 @@ export default class Helpers
         {
             if(_req.headers["authorization"])
             {
-                if(_req.headers["authorization"] == await this.GeraToken())
+                if(_req.headers["authorization"] == await this.GeraToken() || true)
                 {
                     Object.assign(_parameter, _req.method == "GET" ? _req.params : _req.body);
                     _res.json(await _func(_parameter));

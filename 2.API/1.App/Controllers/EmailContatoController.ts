@@ -1,7 +1,6 @@
 import ReturnMessage from "../../2.Domain/Commom/ReturnMessage";
 import EmailContatoDto from "../../2.Domain/EmailContato/Dtos/EmailContatoDto";
 import EmailContatoService from "../../2.Domain/EmailContato/EmailContatoService";
-import ReturnResultDB from "../../2.Domain/Commom/ReturnResultDB";
 
 export default class EmailContatoController
 {

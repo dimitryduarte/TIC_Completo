@@ -9,11 +9,12 @@ BEGIN
 	vLista := (
 		SELECT  COALESCE(json_agg(telefone), '[]')
 			FROM (
-				SELECT  id_tipo_telefone,
-                        str_descricao
+				SELECT  TTEL.id_tipo_telefone,
+                        TTEL.str_descricao,
+						TTEL.fg_status
 				FROM public."tbTipoTelefone" AS TTEL
 				WHERE (TTEL.id_tipo_telefone = vIdTipoTelefone)
-					OR (TTEL.fg_status = '1' AND vIdTipoTelefone IS NULL)
+					OR (TTEL.fg_status = 'true' AND vIdTipoTelefone IS NULL)
 			) telefone
 	);
 
@@ -21,7 +22,7 @@ BEGIN
 		SELECT COUNT(*)
 			FROM public."tbTipoTelefone" AS TTEL
 			WHERE (TTEL.id_tipo_telefone = vIdTipoTelefone)
-				OR (TTEL.fg_status = '1' AND vIdTipoTelefone IS NULL)
+				OR (TTEL.fg_status = 'true' AND vIdTipoTelefone IS NULL)
 	);
 
 	RETURN json_build_object (

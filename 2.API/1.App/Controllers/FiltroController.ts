@@ -1,5 +1,4 @@
 import ReturnMessage from "../../2.Domain/Commom/ReturnMessage";
-import ReturnResultDB from "../../2.Domain/Commom/ReturnResultDB";
 import FiltroDto from "../../2.Domain/Filtro/Dtos/FiltroDto";
 import FiltroService from "../../2.Domain/Filtro/FiltroService";
 

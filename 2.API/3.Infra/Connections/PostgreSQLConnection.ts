@@ -57,11 +57,12 @@ export default class PostgreSQLConnection
     {
         try
         {
-            let RM: ReturnMessage<null> = new ReturnMessage<null>(200, "", false);
+            let RM: ReturnMessage<null> = new ReturnMessage<null>(400, "FALHA", false);
 
             await this.db.proc(this.procedure, this.values.length > 1 ? this.values : this.values[0])
                 .then((data) => {
                     Object.assign(RM, data[this.procedure.toLocaleLowerCase()]);
+                    RM.updateStatus(RM.Content ? 200 : 400, RM.Message, RM.Content);
                 })
                 .catch((error) => { 
                     RM.updateStatus(400, error.message, false);

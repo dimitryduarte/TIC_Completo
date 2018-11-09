@@ -1,5 +1,4 @@
 import ReturnMessage from "../../2.Domain/Commom/ReturnMessage";
-import ReturnResultDB from "../../2.Domain/Commom/ReturnResultDB";
 import TipoEmailDto from "../../2.Domain/TipoEmail/Dtos/TipoEmailDto";
 import TipoEmailService from "../../2.Domain/TipoEmail/TipoEmailService";
 

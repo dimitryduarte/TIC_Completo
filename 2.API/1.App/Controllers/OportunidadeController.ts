@@ -1,5 +1,4 @@
 import ReturnMessage from "../../2.Domain/Commom/ReturnMessage";
-import ReturnResultDB from "../../2.Domain/Commom/ReturnResultDB";
 import OportunidadeDto from "../../2.Domain/Oportunidade/Dtos/OportunidadeDto";
 import OportunidadeService from "../../2.Domain/Oportunidade/OportunidadeService";
 

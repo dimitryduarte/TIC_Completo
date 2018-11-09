@@ -1,7 +1,6 @@
 import ReturnMessage from "../../2.Domain/Commom/ReturnMessage";
 import EmailEmpresaDto from "../../2.Domain/EmailEmpresa/Dtos/EmailEmpresaDto";
 import EmailEmpresaService from "../../2.Domain/EmailEmpresa/EmailEmpresaService";
-import ReturnResultDB from "../../2.Domain/Commom/ReturnResultDB";
 
 export default class EmailEmpresaController
 {

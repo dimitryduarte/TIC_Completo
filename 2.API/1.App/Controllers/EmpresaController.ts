@@ -1,5 +1,4 @@
 import ReturnMessage from "../../2.Domain/Commom/ReturnMessage";
-import ReturnResultDB from "../../2.Domain/Commom/ReturnResultDB";
 import EmpresaDto from "../../2.Domain/Empresa/Dtos/EmpresaDto";
 import EmpresaService from "../../2.Domain/Empresa/EmpresaService";
 
