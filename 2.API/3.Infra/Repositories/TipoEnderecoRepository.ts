@@ -12,7 +12,9 @@ export default class TipoEnderecoRepository extends Connection
     public async Get(idTipoEndereco: number): Promise<ReturnMessage<TipoEnderecoDto>>
     {
         await this.addProcedure("PR_TipoEnderecoGet");
-        await this.addParameter(idTipoEndereco ? [ idTipoEndereco ] : []);
+        await this.addParameter([
+            idTipoEndereco ? idTipoEndereco : null
+        ]);
 
         return await this.executeQuery<TipoEnderecoDto>();
     }

@@ -2,26 +2,29 @@ CREATE OR REPLACE FUNCTION PR_TipoEmailDelete(
 	vIdTipoEmail INTEGER
 ) RETURNS JSON AS $$
 DECLARE
-    vResult INTEGER := 0;
+    vContent BOOLEAN := 'true';
+	vMessage TEXT := 'Tipo de Email deletado';
 BEGIN
 
-    IF EXISTS(SELECT 1
+    IF EXISTS (SELECT 1
                 FROM public."tbTipoEmail" AS TEMAIL
                 WHERE TEMAIL.id_tipo_email = vIdTipoEmail)
         THEN
         
             UPDATE public."tbTipoEmail"
-                SET fg_status = '0'
+                SET fg_status = 'false'
                 WHERE id_tipo_email = vIdTipoEmail;
                 
         ELSE
         
-            vResult := 1;
+            vContent := 'false';
+            vMessage := 'Tipo de Email não encontrado';
             
         END IF;
         
-    RETURN json_build_object(
-        'result', vResult
+    RETURN json_build_object (
+        'Content', vContent,
+        'Message', vMessage
     );
 
 END;

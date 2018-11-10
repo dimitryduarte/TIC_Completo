@@ -4,7 +4,7 @@ CREATE OR REPLACE FUNCTION PR_TipoTelefonePut (
 ) RETURNS JSON AS $$
 DECLARE
     vContent BOOLEAN := 'true';
-    vMensagem TEXT := 'Tipo de Telefone alterado';
+    vMessage TEXT := 'Tipo de Telefone alterado';
 BEGIN
 
     IF NOT EXISTS (SELECT 1
@@ -13,7 +13,7 @@ BEGIN
         THEN
         
             vContent := 'false';
-            vMensagem := 'Tipo de Telefone não encontrado';
+            vMessage := 'Tipo de Telefone não encontrado';
             
         END IF;
         
@@ -23,7 +23,7 @@ BEGIN
         THEN
 
             vContent := 'false';
-            vMensagem := 'Tipo de Telefone já cadastrado';
+            vMessage := 'Tipo de Telefone já cadastrado';
             
         END IF;
 
@@ -40,7 +40,7 @@ BEGIN
         
     RETURN json_build_object (
         'Content', vContent,
-        'Message', vMensagem
+        'Message', vMessage
     );
 
 END;

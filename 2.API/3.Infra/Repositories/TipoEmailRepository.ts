@@ -12,7 +12,9 @@ export default class TipoEmailRepository extends Connection
     public async Get(idTipoEmail: number): Promise<ReturnMessage<TipoEmailDto>>
     {
         await this.addProcedure("PR_TipoEmailGet");
-        await this.addParameter(idTipoEmail ? [ idTipoEmail ] : []);
+        await this.addParameter([
+            idTipoEmail ? idTipoEmail : null
+        ]);
 
         return await this.executeQuery<TipoEmailDto>();
     }

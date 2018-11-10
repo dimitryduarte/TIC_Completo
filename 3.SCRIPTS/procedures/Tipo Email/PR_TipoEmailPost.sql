@@ -2,12 +2,13 @@ CREATE OR REPLACE FUNCTION PR_TipoEmailPost (
     vStrDescricao TEXT
 ) RETURNS JSON AS $$
 DECLARE
-	vResult INTEGER := 0;
+	vContent BOOLEAN := 'true';
+	vMessage TEXT := 'Tipo de Email cadastrado';
 BEGIN
 
-	IF NOT EXISTS(SELECT 1
-				FROM public."tbTipoEmail" AS TEMAIL
-				WHERE TEMAIL.str_descricao = vStrDescricao)
+	IF NOT EXISTS (SELECT 1
+					FROM public."tbTipoEmail" AS TEMAIL
+					WHERE TEMAIL.str_descricao = vStrDescricao)
 		THEN
 
 			INSERT INTO public."tbTipoEmail"
@@ -17,13 +18,15 @@ BEGIN
 
 		ELSE
 
-			vResult := 1;
+			vContent := 'false';
+			vMessage := 'Tipo de Email já cadastrado';
 			
 		END IF;
 	
-	RETURN json_build_object(
-		'result', vResult
-	);
+	RETURN json_build_object (
+        'Content', vContent,
+        'Message', vMessage
+    );
 
 END;
 $$ LANGUAGE 'plpgsql';

@@ -1,27 +1,30 @@
-CREATE OR REPLACE FUNCTION PR_TipoEnderecoDelete(
+CREATE OR REPLACE FUNCTION PR_TipoEnderecoDelete (
 	vIdTipoEndereco INTEGER
 ) RETURNS JSON AS $$
 DECLARE
-    vResult INTEGER := 0;
+    vContent BOOLEAN := 'true';
+	vMessage TEXT := 'Tipo de Endereço deletado';
 BEGIN
 
-    IF EXISTS(SELECT 1
+    IF EXISTS (SELECT 1
                 FROM public."tbTipoEndereco" AS TEND
                 WHERE TEND.id_tipo_endereco = vIdTipoEndereco)
         THEN
         
             UPDATE public."tbTipoEndereco"
-                SET fg_status = '0'
+                SET fg_status = 'false'
                 WHERE id_tipo_endereco = vIdTipoEndereco;
                 
         ELSE
         
-            vResult := 1;
+            vContent := 'false';
+            vMessage := 'Tipo de Endereço não encontrado';
             
         END IF;
         
-    RETURN json_build_object(
-        'result', vResult
+    RETURN json_build_object (
+        'Content', vContent,
+        'Message', vMessage
     );
 
 END;

@@ -3,26 +3,42 @@ CREATE OR REPLACE FUNCTION PR_TipoEnderecoPut(
     vStrDescricao   TEXT
 ) RETURNS JSON AS $$
 DECLARE
-    vResult INTEGER := 0;
+    vContent BOOLEAN := 'true';
+    vMessage TEXT := 'Tipo de Oportunidade alterado';
 BEGIN
 
-    IF EXISTS(SELECT 1
-                FROM public."tbTipoEndereco" AS TEND
-                WHERE TEND.id_tipo_endereco = vIdTipoEndereco)
+    IF NOT EXISTS (SELECT 1
+                    FROM public."tbTipoEndereco" AS TEND
+                    WHERE TEND.id_tipo_endereco = vIdTipoEndereco)
         THEN
         
+            vContent := 'false';
+            vMessage := 'Tipo de Endereço não encontrado';
+            
+        END IF;
+                
+    IF EXISTS (SELECT 1
+                FROM public."tbTipoEndereco" AS TTEL
+                WHERE TTEL.str_descricao = vStrDescricao)
+        THEN
+
+            vContent := 'false';
+            vMessage := 'Tipo de Endereço já cadastrado';
+            
+        END IF;
+
+    IF(vContent)
+        THEN
+
             UPDATE public."tbTipoEndereco"
                 SET str_descricao = vStrDescricao
                 WHERE id_tipo_endereco = vIdTipoEndereco;
-                
-        ELSE
         
-            vResult := 1;
-            
         END IF;
-        
-    RETURN json_build_object(
-        'result', vResult
+
+    RETURN json_build_object (
+        'Content', vContent,
+        'Message', vMessage
     );
 
 END;

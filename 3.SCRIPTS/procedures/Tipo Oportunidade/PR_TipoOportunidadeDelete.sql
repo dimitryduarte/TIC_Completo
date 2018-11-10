@@ -3,7 +3,7 @@ CREATE OR REPLACE FUNCTION PR_TipoOportunidadeDelete (
 ) RETURNS JSON AS $$
 DECLARE
     vContent BOOLEAN := 'true';
-	vMensagem TEXT := 'Tipo de Oportunidade deletado';
+	vMessage TEXT := 'Tipo de Oportunidade deletado';
 BEGIN
 
     IF EXISTS (SELECT 1
@@ -17,14 +17,14 @@ BEGIN
                 
         ELSE
         
-            vContent := 1;
-            vMensagem := 'Tipo de Oportunidade não encontrado';
+            vContent := 'false';
+            vMessage := 'Tipo de Oportunidade não encontrado';
             
         END IF;
         
     RETURN json_build_object (
         'Content', vContent,
-        'Message', vMensagem
+        'Message', vMessage
     );
 
 END;

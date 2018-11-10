@@ -4,7 +4,7 @@ CREATE OR REPLACE FUNCTION PR_TipoOportunidadePut (
 ) RETURNS JSON AS $$
 DECLARE
     vContent BOOLEAN := 'true';
-    vMensagem TEXT := 'Tipo de Oportunidade alterado';
+    vMessage TEXT := 'Tipo de Oportunidade alterado';
 BEGIN
 
     IF NOT EXISTS (SELECT 1
@@ -13,7 +13,7 @@ BEGIN
         THEN
         
             vContent := 'false';
-            vMensagem := 'Tipo de Oportunidade não encontrado';
+            vMessage := 'Tipo de Oportunidade não encontrado';
             
         END IF;
                 
@@ -23,7 +23,7 @@ BEGIN
         THEN
 
             vContent := 'false';
-            vMensagem := 'Tipo de Oportunidade já cadastrado';
+            vMessage := 'Tipo de Oportunidade já cadastrado';
             
         END IF;
 
@@ -38,7 +38,7 @@ BEGIN
 
     RETURN json_build_object (
         'Content', vContent,
-        'Message', vMensagem
+        'Message', vMessage
     );
 
 END;

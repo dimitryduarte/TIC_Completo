@@ -6,7 +6,7 @@ export default class TipoEmailDto
     public str_descricao: string;
     public fg_status: boolean;
 
-    private returnMessage: ReturnMessage<null> = new ReturnMessage<null>(200, "Objeto válido", true);
+    private RM: ReturnMessage<null> = new ReturnMessage<null>(200, "Objeto válido", true);
     
     constructor ()
     {
@@ -15,7 +15,7 @@ export default class TipoEmailDto
         this.fg_status = false;
     }
 
-    public isValid(isGet: boolean = false)
+    public isValid(action: string) : ReturnMessage<null>
     {
         !isNaN(parseInt(`${this.id_tipo_email}`))
         ? this.id_tipo_email = parseInt(`${this.id_tipo_email}`)
@@ -25,10 +25,18 @@ export default class TipoEmailDto
         ? this.fg_status = true
         : this.fg_status = false;
 
-        if(!isGet)
+        if(["PUT", "DELETE"].indexOf(action) > -1)
         {
+            if(this.id_tipo_email == 0)
+                this.RM.updateStatus(400, "Identificador de Tipo Telefone Inválido", false);
         }
 
-        return this.returnMessage;
+        if(["POST", "PUT"].indexOf(action) > -1)
+        {       
+            if(!this.str_descricao)
+                this.RM.updateStatus(400, "Descrição de Tipo Telefone Inválida", false);
+        }
+
+        return this.RM;
     }
 }

@@ -2,12 +2,13 @@ CREATE OR REPLACE FUNCTION PR_TipoEnderecoPost (
     vStrDescricao TEXT
 ) RETURNS JSON AS $$
 DECLARE
-	vResult INTEGER := 0;
+	vContent BOOLEAN := 'true';
+	vMessage TEXT := 'Tipo de Endereço cadastrado';
 BEGIN
 
-	IF NOT EXISTS(SELECT 1
-				FROM public."tbTipoEndereco" AS TEND
-				WHERE TEND.str_descricao = vStrDescricao)
+	IF NOT EXISTS (SELECT 1
+					FROM public."tbTipoEndereco" AS TEND
+					WHERE TEND.str_descricao = vStrDescricao)
 		THEN
 
 			INSERT INTO public."tbTipoEndereco"
@@ -17,13 +18,15 @@ BEGIN
 
 		ELSE
 
-			vResult := 1;
+			vContent := 'false';
+			vMessage := 'Tipo de Endereço já cadastrado';
 			
 		END IF;
 	
-	RETURN json_build_object(
-		'result', vResult
-	);
+	RETURN json_build_object (
+        'Content', vContent,
+        'Message', vMessage
+    );
 
 END;
 $$ LANGUAGE 'plpgsql';

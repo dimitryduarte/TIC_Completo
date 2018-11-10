@@ -3,7 +3,7 @@ CREATE OR REPLACE FUNCTION PR_TipoOportunidadePost (
 ) RETURNS JSON AS $$
 DECLARE
 	vContent BOOLEAN := 'true';
-	vMensagem TEXT := 'Tipo de Oportunidade cadastrado';
+	vMessage TEXT := 'Tipo de Oportunidade cadastrado';
 BEGIN
 
 	IF NOT EXISTS (SELECT 1
@@ -19,13 +19,13 @@ BEGIN
 		ELSE
 
 			vContent := 'false';
-			vMensagem := 'Tipo de Oportunidade já cadastrado';
+			vMessage := 'Tipo de Oportunidade já cadastrado';
 			
 		END IF;
 	
 	RETURN json_build_object (
         'Content', vContent,
-        'Message', vMensagem
+        'Message', vMessage
     );
 
 END;

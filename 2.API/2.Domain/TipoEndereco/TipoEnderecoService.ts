@@ -6,7 +6,7 @@ export default class TipoenderecoService
 {
     public async Get(dto: TipoEnderecoDto): Promise<ReturnMessage<TipoEnderecoDto>>
     {
-        if(dto.isValid(true).Content)
+        if(dto.isValid("GET").Content)
             return await new TipoEnderecoRepository().Get(dto.id_tipo_endereco);
 
         return new ReturnMessage<TipoEnderecoDto>(400, "O parâmetro informado não foi aceito", false);
@@ -14,7 +14,7 @@ export default class TipoenderecoService
 
     public async Post(dto: TipoEnderecoDto): Promise<ReturnMessage<null>>
     {
-        let valid = dto.isValid();
+        let valid = dto.isValid("POST");
         if(valid.Content)
             return await new TipoEnderecoRepository().Post(dto);
 
@@ -23,7 +23,7 @@ export default class TipoenderecoService
 
     public async Put(dto: TipoEnderecoDto): Promise<ReturnMessage<null>>
     {
-        let valid = dto.isValid();
+        let valid = dto.isValid("PUT");
         if(valid.Content)
             return await new TipoEnderecoRepository().Put(dto);
 
@@ -32,7 +32,7 @@ export default class TipoenderecoService
 
     public async Delete(dto: TipoEnderecoDto): Promise<ReturnMessage<null>>
     {
-        if(dto.isValid().Content)
+        if(dto.isValid("DELETE").Content)
             return await new TipoEnderecoRepository().Delete(dto.id_tipo_endereco);
 
         return new ReturnMessage<null>(400, "O parâmetro informado não foi aceito", false);
