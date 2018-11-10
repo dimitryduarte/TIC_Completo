@@ -2,11 +2,11 @@ CREATE OR REPLACE FUNCTION PR_TipoTelefoneGet (
 	vIdTipoTelefone INTEGER = NULL
 ) RETURNS JSON AS $$
 DECLARE
-	vLista JSON;
-	vTotalLinhas INTEGER;
+	vList JSON;
+	vLines INTEGER;
 BEGIN
 
-	vLista := (
+	vList := (
 		SELECT  COALESCE(json_agg(telefone), '[]')
 			FROM (
 				SELECT  TTEL.id_tipo_telefone,
@@ -18,7 +18,7 @@ BEGIN
 			) telefone
 	);
 
-	vTotalLinhas := (
+	vLines := (
 		SELECT COUNT(*)
 			FROM public."tbTipoTelefone" AS TTEL
 			WHERE (TTEL.id_tipo_telefone = vIdTipoTelefone)
@@ -26,8 +26,8 @@ BEGIN
 	);
 
 	RETURN json_build_object (
-		'Lista', vLista,
-		'TotalLinhas', vTotalLinhas
+		'List', vList,
+		'Lines', vLines
 	);
 
 END;

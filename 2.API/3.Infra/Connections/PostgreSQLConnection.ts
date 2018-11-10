@@ -86,16 +86,16 @@ export default class PostgreSQLConnection
                 .then((data) => {
                     Object.assign(RM, data[this.procedure.toLocaleLowerCase()]);
 
-                    RM.Lista.forEach(function(o, i)
+                    RM.List.forEach(function(o, i)
                     {
                         for (const k in o)
                             if(typeof(o[k]) == "string")
-                                Object.defineProperty(RM.Lista[i], k, { 
+                                Object.defineProperty(RM.List[i], k, { 
                                     value : o[k].toString().replace(/(')/g, "") 
                                 });
                     });
 
-                    RM.updateStatus(200, "SUCESSO", true, RM.Lista, RM.TotalLinhas);
+                    RM.updateStatus(200, "SUCESSO", true, RM.List, RM.Lines);
                 })
                 .catch((error) => { 
                     RM.updateStatus(400, error.message, false);

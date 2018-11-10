@@ -1,32 +1,33 @@
-CREATE OR REPLACE FUNCTION PR_TipoOportunidadeGet(
+CREATE OR REPLACE FUNCTION PR_TipoOportunidadeGet (
 	vIdTipoOportunidade INTEGER = NULL
 ) RETURNS JSON AS $$
 DECLARE
-	vResult JSON;
-	vTotalLinhas INTEGER;
+	vList JSON;
+	vLines INTEGER;
 BEGIN
 
-	vResult := (
+	vList := (
 		SELECT  COALESCE(json_agg(oportunidade), '[]')
 			FROM (
 				SELECT  id_tipo_oportunidade,
-                        str_descricao
+                        str_descricao,
+						fg_status
 				FROM public."tbTipoOportunidade" AS TOPOR
-				WHERE (TOPOR.id_tipo_oportunidade = vIdTipoOportunidade)
-					OR (TOPOR.fg_status = '1' AND vIdTipoOportunidade IS NULL)
+				WHERE TOPOR.id_tipo_oportunidade = vIdTipoOportunidade
+					OR (TOPOR.fg_status = 'true' AND vIdTipoOportunidade IS NULL)
 			) oportunidade
 	);
 
-	vTotalLinhas := (
+	vLines := (
 		SELECT COUNT(*)
 			FROM public."tbTipoOportunidade" AS TOPOR
-			WHERE (TOPOR.id_tipo_oportunidade = vIdTipoOportunidade)
-				OR (TOPOR.fg_status = '1' AND vIdTipoOportunidade IS NULL)
+			WHERE TOPOR.id_tipo_oportunidade = vIdTipoOportunidade
+				OR (TOPOR.fg_status = 'true' AND vIdTipoOportunidade IS NULL)
 	);
 
-	RETURN json_build_object(
-		'result', vResult,
-		'totalLinhas', vTotalLinhas
+	RETURN json_build_object (
+		'List', vList,
+		'Lines', vLines
 	);
 
 END;

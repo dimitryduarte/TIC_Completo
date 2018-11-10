@@ -2,10 +2,11 @@ CREATE OR REPLACE FUNCTION PR_TipoOportunidadePost (
     vStrDescricao TEXT
 ) RETURNS JSON AS $$
 DECLARE
-	vResult INTEGER := 0;
+	vContent BOOLEAN := 'true';
+	vMensagem TEXT := 'Tipo de Oportunidade cadastrado';
 BEGIN
 
-	IF NOT EXISTS(SELECT 1
+	IF NOT EXISTS (SELECT 1
 				FROM public."tbTipoOportunidade" AS TOPOR
 				WHERE TOPOR.str_descricao = vStrDescricao)
 		THEN
@@ -17,13 +18,15 @@ BEGIN
 
 		ELSE
 
-			vResult := 1;
+			vContent := 'false';
+			vMensagem := 'Tipo de Oportunidade já cadastrado';
 			
 		END IF;
 	
-	RETURN json_build_object(
-		'result', vResult
-	);
+	RETURN json_build_object (
+        'Content', vContent,
+        'Message', vMensagem
+    );
 
 END;
 $$ LANGUAGE 'plpgsql';

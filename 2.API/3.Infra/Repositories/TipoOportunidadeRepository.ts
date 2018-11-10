@@ -12,7 +12,9 @@ export default class TipoOportunidadeRepository extends Connection
     public async Get(idTipoOportunidade: number): Promise<ReturnMessage<TipoOportunidadeDto>>
     {
         await this.addProcedure("PR_TipoOportunidadeGet");
-        await this.addParameter(idTipoOportunidade ? [ idTipoOportunidade ] : []);
+        await this.addParameter([
+            idTipoOportunidade ? idTipoOportunidade : null
+        ]);
 
         return await this.executeQuery<TipoOportunidadeDto>();
     }

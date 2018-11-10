@@ -1,27 +1,30 @@
-CREATE OR REPLACE FUNCTION PR_TipoOportunidadeDelete(
+CREATE OR REPLACE FUNCTION PR_TipoOportunidadeDelete (
 	vIdTipoOportunidade INTEGER
 ) RETURNS JSON AS $$
 DECLARE
-    vResult INTEGER := 0;
+    vContent BOOLEAN := 'true';
+	vMensagem TEXT := 'Tipo de Oportunidade deletado';
 BEGIN
 
-    IF EXISTS(SELECT 1
+    IF EXISTS (SELECT 1
                 FROM public."tbTipoOportunidade" AS TOPOR
                 WHERE TOPOR.id_tipo_oportunidade = vIdTipoOportunidade)
         THEN
         
             UPDATE public."tbTipoOportunidade"
-                SET fg_status = '0'
+                SET fg_status = 'false'
                 WHERE id_tipo_oportunidade = vIdTipoOportunidade;
                 
         ELSE
         
-            vResult := 1;
+            vContent := 1;
+            vMensagem := 'Tipo de Oportunidade não encontrado';
             
         END IF;
         
-    RETURN json_build_object(
-        'result', vResult
+    RETURN json_build_object (
+        'Content', vContent,
+        'Message', vMensagem
     );
 
 END;

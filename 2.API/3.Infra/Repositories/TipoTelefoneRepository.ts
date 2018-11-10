@@ -12,7 +12,9 @@ export default class TipoTelefoneRepository extends Connection
     public async Get(idTipoTelefone: number): Promise<ReturnMessage<TipoTelefoneDto>>
     {
         await this.addProcedure("PR_TipoTelefoneGet");
-        await this.addParameter(idTipoTelefone ? [ idTipoTelefone ] : []);
+        await this.addParameter([
+            idTipoTelefone ? idTipoTelefone : null
+        ]);
 
         return await this.executeQuery<TipoTelefoneDto>();
     }
