@@ -32,9 +32,10 @@ export default class TipoenderecoService
 
     public async Delete(dto: TipoEnderecoDto): Promise<ReturnMessage<null>>
     {
-        if(dto.isValid("DELETE").Content)
+        let valid = dto.isValid("DELETE");
+        if(valid.Content)
             return await new TipoEnderecoRepository().Delete(dto.id_tipo_endereco);
 
-        return new ReturnMessage<null>(400, "O parâmetro informado não foi aceito", false);
+        return valid;
     }
 }

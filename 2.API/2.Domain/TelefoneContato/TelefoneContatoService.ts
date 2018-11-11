@@ -27,9 +27,10 @@ export default class TelefoneContatoService
 
     public async Delete(dto: TelefoneContatoDto): Promise<ReturnMessage<null>>
     {
-        if(dto.isValid("DELETE").Content)
+        let valid = dto.isValid("DELETE");
+        if(valid.Content)
             return await new TelefoneContatoRepository().Delete(dto.id_telefone);
         
-        return new ReturnMessage<null>(400, "O parâmetro informado não foi aceito", false);
+        return valid;
     }
 }

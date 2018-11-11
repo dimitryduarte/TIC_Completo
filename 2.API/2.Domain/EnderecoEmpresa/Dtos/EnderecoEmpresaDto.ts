@@ -12,7 +12,7 @@ export default class EmailEmpresaDto
     public str_cidade: string;
     public str_uf: string;
 
-    private returnMessage: ReturnMessage<null> = new ReturnMessage<null>(200, "Objeto válido", true);
+    private RM: ReturnMessage<null> = new ReturnMessage<null>(200, "Objeto válido", true);
 
     constructor ()
     {
@@ -27,7 +27,7 @@ export default class EmailEmpresaDto
         this.str_uf = "";
     }
 
-    public isValid(isGet: boolean = false): ReturnMessage<null>
+    public isValid(action: string): ReturnMessage<null>
     {
         !isNaN(parseInt(`${this.id_endereco}`))
         ? this.id_endereco = parseInt(`${this.id_endereco}`)
@@ -49,33 +49,39 @@ export default class EmailEmpresaDto
         ? this.num_numero = parseInt(`${this.num_numero}`)
         : this.num_numero = 0;
         
-        if(!isGet)
+        if(["POST"].indexOf(action) > -1)
         {
             if(this.id_empresa == 0)
-                this.returnMessage.updateStatus(400, "Número do Contato Inválido", false);
+                this.RM.updateStatus(400, "Identificador do Contato Inválido", false);
 
             if(this.id_tipo_endereco == 0)
-                this.returnMessage.updateStatus(400, "Número do Tipo de Email Inválido", false);
+                this.RM.updateStatus(400, "Identificador do Tipo Inválido", false);
 
             if(this.num_cep == 0)
-                this.returnMessage.updateStatus(400, "Número do CEP Inválido", false);
+                this.RM.updateStatus(400, "CEP Inválido", false);
 
             if(!this.str_logradouro)
-                this.returnMessage.updateStatus(400, "Logradouro Inválido", false);
+                this.RM.updateStatus(400, "Logradouro Inválido", false);
 
             if(this.num_numero == 0)
-                this.returnMessage.updateStatus(400, "Número do Endereço Inválido", false);
+                this.RM.updateStatus(400, "Número Inválido", false);
 
             if(!this.str_bairro)
-                this.returnMessage.updateStatus(400, "Bairro Inválido", false);
+                this.RM.updateStatus(400, "Bairro Inválido", false);
 
             if(!this.str_cidade)
-                this.returnMessage.updateStatus(400, "Cidade Inválido", false);
+                this.RM.updateStatus(400, "Cidade Inválido", false);
 
             if(!this.str_uf)
-                this.returnMessage.updateStatus(400, "Estado Inválido", false);
+                this.RM.updateStatus(400, "Estado Inválido", false);
         }
 
-        return this.returnMessage;
+        if(["DELETE"].indexOf(action) > -1)
+        {
+            if(this.id_endereco == 0)
+                this.RM.updateStatus(400, "Identificador Inválido", false);
+        }
+
+        return this.RM;
     }
 }

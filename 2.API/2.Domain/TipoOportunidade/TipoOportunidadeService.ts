@@ -32,9 +32,10 @@ export default class TipoOportunidadeService
 
     public async Delete(dto: TipoOportunidadeDto): Promise<ReturnMessage<null>>
     {
-        if(dto.isValid("DELETE").Content)
+        let valid = dto.isValid("DELETE");
+        if(valid.Content)
             return await new TipoOportunidadeRepository().Delete(dto.id_tipo_oportunidade);
 
-        return new ReturnMessage<null>(400, "O parâmetro informado não foi aceito", false);
+        return valid;
     }
 }

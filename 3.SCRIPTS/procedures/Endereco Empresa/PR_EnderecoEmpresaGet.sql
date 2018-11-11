@@ -3,11 +3,11 @@ CREATE OR REPLACE FUNCTION PR_EnderecoEmpresaGet (
 	vIdEndereco INTEGER = NULL
 ) RETURNS JSON AS $$
 DECLARE
-	vResult JSON;
-	vTotalLinhas INTEGER;
+	vList JSON;
+	vLines INTEGER;
 BEGIN
 
-	vResult := (
+	vList := (
 		SELECT  COALESCE(json_agg(endereco), '[]')
 			FROM (
 				SELECT  EEMP.id_endereco,
@@ -20,21 +20,25 @@ BEGIN
 						EEMP.str_cidade,
 						EEMP.str_uf
 				FROM public."tbEnderecoEmpresa" AS EEMP
-				WHERE (EEMP.id_empresa = vIdEmpresa OR vIdEmpresa IS NULL)
-					AND (EEMP.id_endereco = vIdEndereco OR vIdEndereco IS NULL)
+				WHERE EEMP.id_endereco = vIdEndereco
+					OR EEMP.id_empresa = vIdEmpresa
+					OR (vIdEndereco IS NULL 
+							AND vIdEmpresa IS NULL)
 			) endereco
 	);
 
-	vTotalLinhas := (
+	vLines := (
 		SELECT COUNT(*)
 			FROM public."tbEnderecoEmpresa" AS EEMP
-			WHERE (EEMP.id_empresa = vIdEmpresa OR vIdEmpresa IS NULL)
-				AND (EEMP.id_endereco = vIdEndereco OR vIdEndereco IS NULL)
+			WHERE EEMP.id_endereco = vIdEndereco
+					OR EEMP.id_empresa = vIdEmpresa
+					OR (vIdEndereco IS NULL 
+							AND vIdEmpresa IS NULL)
 	);
 
-	RETURN json_build_object(
-		'result', vResult,
-		'totalLinhas', vTotalLinhas
+	RETURN json_build_object (
+		'List', vList,
+		'Lines', vLines
 	);
 
 END;

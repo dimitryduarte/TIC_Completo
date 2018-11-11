@@ -2,10 +2,11 @@ CREATE OR REPLACE FUNCTION PR_EnderecoEmpresaDelete (
 	vIdEndereco INTEGER
 ) RETURNS JSON AS $$
 DECLARE
-    vResult INTEGER := 0;
+    vContent BOOLEAN := 'true';
+	vMessage TEXT := 'Endereço da Empresa deletado';
 BEGIN
 
-    IF EXISTS(SELECT 1
+    IF EXISTS (SELECT 1
                 FROM public."tbEnderecoEmpresa" AS EEMP
                 WHERE EEMP.id_endereco = vIdEndereco)
         THEN
@@ -15,12 +16,14 @@ BEGIN
                 
         ELSE
         
-            vResult := 1;
+            vContent := 'false';
+            vMessage := 'Endereço da Empresa não encontrado';
             
         END IF;
         
-    RETURN json_build_object(
-        'result', vResult
+    RETURN json_build_object (
+        'Content', vContent,
+        'Message', vMessage
     );
 
 END;

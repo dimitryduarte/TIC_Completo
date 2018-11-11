@@ -46,10 +46,11 @@ export default class ContatoService
 
     public async Delete(dto: ContatoDto): Promise<ReturnMessage<null>>
     {
-        if(dto.isValid("DELETE").Content)
+        let valid = dto.isValid("DELETE");
+        if(valid.Content)
             return await new ContatoRepository().Delete(dto.id_contato);
 
-        return new ReturnMessage<null>(400, "O parâmetro informado não foi aceito", false);
+        return valid;
     }
 
     private async SaveAnotherInfo(dto: ContatoDto): Promise<ReturnMessage<null>>

@@ -2,10 +2,11 @@ CREATE OR REPLACE FUNCTION PR_EmailContatoDelete (
 	vIdEmail INTEGER
 ) RETURNS JSON AS $$
 DECLARE
-    vResult INTEGER := 0;
+    vContent BOOLEAN := 'true';
+	vMessage TEXT := 'Email do Contato deletado';
 BEGIN
 
-    IF EXISTS(SELECT 1
+    IF EXISTS (SELECT 1
                 FROM public."tbEmailContato" AS ECONT
                 WHERE ECONT.id_email = vIdEmail)
         THEN
@@ -15,12 +16,14 @@ BEGIN
                 
         ELSE
         
-            vResult := 1;
+            vContent := 'false';
+            vMessage := 'Email do Contato não encontrado';
             
         END IF;
         
-    RETURN json_build_object(
-        'result', vResult
+    RETURN json_build_object (
+        'Content', vContent,
+        'Message', vMessage
     );
 
 END;

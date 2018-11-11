@@ -3,11 +3,11 @@ CREATE OR REPLACE FUNCTION PR_EmailEmpresaGet (
 	vIdEmail 	INTEGER = NULL
 ) RETURNS JSON AS $$
 DECLARE
-	vResult JSON;
-	vTotalLinhas INTEGER;
+	vList JSON;
+	vLines INTEGER;
 BEGIN
 
-	vResult := (
+	vList := (
 		SELECT  COALESCE(json_agg(email), '[]')
 			FROM (
 				SELECT  EEMP.id_email,
@@ -15,21 +15,25 @@ BEGIN
 						EEMP.id_tipo_email,
 						EEMP.str_email
 				FROM public."tbEmailEmpresa" AS EEMP
-				WHERE (EEMP.id_empresa = vIdEmpresa OR vIdEmpresa IS NULL)
-					AND (EEMP.id_email = vIdEmail OR vIdEmail IS NULL)
+				WHERE EEMP.id_email = vIdEmail
+					OR EEMP.id_empresa = vIdEmpresa
+					OR (vIdEmail IS NULL
+						AND vIdEmpresa IS NULL)
 			) email
 	);
 
-	vTotalLinhas := (
+	vLines := (
 		SELECT COUNT(*)
 			FROM public."tbEmailEmpresa" AS EEMP
-			WHERE (EEMP.id_empresa = vIdEmpresa OR vIdEmpresa IS NULL)
-				AND (EEMP.id_email = vIdEmail OR vIdEmail IS NULL)
+			WHERE EEMP.id_email = vIdEmail
+					OR EEMP.id_empresa = vIdEmpresa
+					OR (vIdEmail IS NULL
+						AND vIdEmpresa IS NULL)
 	);
 
 	RETURN json_build_object(
-		'result', vResult,
-		'totalLinhas', vTotalLinhas
+		'List', vList,
+		'Lines', vLines
 	);
 
 END;

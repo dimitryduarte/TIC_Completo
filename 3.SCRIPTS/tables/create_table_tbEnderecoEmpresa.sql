@@ -21,7 +21,9 @@ CREATE TABLE public."tbEnderecoEmpresa"
     CONSTRAINT "fk_id_tipo_endereco_tbTipoEndereco_tbEnderecoEmpresa" FOREIGN KEY (id_tipo_endereco)
         REFERENCES public."tbTipoEndereco" (id_tipo_endereco) MATCH SIMPLE
         ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT uni_tbEnderecoEmpresa UNIQUE
+        (id_empresa, num_cep, num_numero, id_tipo_endereco)
 )
 WITH (
     OIDS = FALSE

@@ -6,7 +6,7 @@ export default class EmailContatoService
 {
     public async Get(dto: EmailContatoDto): Promise<ReturnMessage<EmailContatoDto>>
     {
-        if(dto.isValid(true).Content)
+        if(dto.isValid("GET").Content)
             return await new EmailContatoRepository().Get(dto.id_contato, dto.id_email);
         
         return new ReturnMessage<EmailContatoDto>(400, "O parâmetro informado não foi aceito", false);
@@ -14,7 +14,7 @@ export default class EmailContatoService
 
     public async Post(dto: EmailContatoDto): Promise<ReturnMessage<null>>
     {
-        let valid = dto.isValid();
+        let valid = dto.isValid("POST");
         if(valid.Content)
         {
             await this.Delete(dto);
@@ -27,9 +27,10 @@ export default class EmailContatoService
 
     public async Delete(dto: EmailContatoDto): Promise<ReturnMessage<null>>
     {
-        if(dto.isValid().Content)
+        let valid = dto.isValid("DELETE");
+        if(valid.Content)
             return await new EmailContatoRepository().Delete(dto.id_email);
         
-        return new ReturnMessage<null>(400, "O parâmetro informado não foi aceito", false);
+        return valid;
     }
 }

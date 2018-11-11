@@ -6,7 +6,7 @@ export default class EmailEmpresaService
 {
     public async Get(dto: EmailEmpresaDto): Promise<ReturnMessage<EmailEmpresaDto>>
     {
-        if(dto.isValid(true).Content)
+        if(dto.isValid("GET").Content)
             return await new EmailEmpresaRepository().Get(dto.id_empresa, dto.id_email);
         
         return new ReturnMessage<EmailEmpresaDto>(400, "O parâmetro informado não foi aceito", false);
@@ -14,10 +14,11 @@ export default class EmailEmpresaService
 
     public async Post(dto: EmailEmpresaDto): Promise<ReturnMessage<null>>
     {
-        let valid = dto.isValid();
+        let valid = dto.isValid("POST");
         if(valid.Content)
         {
-            await this.Delete(dto);
+            if(dto.id_email != 0)
+                await this.Delete(dto);
 
             return await new EmailEmpresaRepository().Post(dto);
         }
@@ -27,9 +28,10 @@ export default class EmailEmpresaService
 
     public async Delete(dto: EmailEmpresaDto): Promise<ReturnMessage<null>>
     {
-        if(dto.isValid().Content)
+        let valid = dto.isValid("DELETE");
+        if(valid.Content)
             return await new EmailEmpresaRepository().Delete(dto.id_email);
         
-        return new ReturnMessage<null>(400, "O parâmetro informado não foi aceito", false);
+        return valid;
     }
 }

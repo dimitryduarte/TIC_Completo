@@ -16,7 +16,9 @@ CREATE TABLE public."tbEmailContato"
     CONSTRAINT "fk_id_tipo_email_tbTipoEmail_tbEmailContato" FOREIGN KEY (id_tipo_email)
         REFERENCES public."tbTipoEmail" (id_tipo_email) MATCH SIMPLE
         ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT uni_tbEmailContato UNIQUE
+        (id_contato, str_email, id_tipo_email)
 )
 WITH (
     OIDS = FALSE

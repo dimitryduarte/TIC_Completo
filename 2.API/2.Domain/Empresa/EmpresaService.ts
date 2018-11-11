@@ -53,10 +53,11 @@ export default class EmpresaService
 
     public async Delete(dto: EmpresaDto): Promise<ReturnMessage<null>>
     {
-        if(dto.isValid("DELETE").Content)
+        let valid = dto.isValid("DELETE");
+        if(valid.Content)
             return await new EmpresaRepository().Delete(dto.id_empresa);
 
-        return new ReturnMessage<null>(400, "O parâmetro informado não foi aceito", false);
+        return valid;
     }
 
     private async SaveAnotherInfo(dto: EmpresaDto): Promise<ReturnMessage<null>>

@@ -6,7 +6,7 @@ export default class EnderecoEmpresaService
 {
     public async Get(dto: EnderecoEmpresaDto): Promise<ReturnMessage<EnderecoEmpresaDto>>
     {
-        if(dto.isValid(true).Content)
+        if(dto.isValid("GET").Content)
             return await new EnderecoEmpresaRepository().Get(dto.id_empresa, dto.id_endereco);
         
         return new ReturnMessage<EnderecoEmpresaDto>(400, "O parâmetro informado não foi aceito", false);
@@ -14,7 +14,7 @@ export default class EnderecoEmpresaService
 
     public async Post(dto: EnderecoEmpresaDto): Promise<ReturnMessage<null>>
     {
-        let valid = dto.isValid();
+        let valid = dto.isValid("POST");
         if(valid.Content)
         {
             await this.Delete(dto);
@@ -27,9 +27,10 @@ export default class EnderecoEmpresaService
 
     public async Delete(dto: EnderecoEmpresaDto): Promise<ReturnMessage<null>>
     {
-        if(dto.isValid().Content)
+        let valid = dto.isValid("DELETE");
+        if(valid.Content)
             return await new EnderecoEmpresaRepository().Delete(dto.id_endereco);
         
-        return new ReturnMessage<null>(400, "O parâmetro informado não foi aceito", false);
+        return valid;
     }
 }

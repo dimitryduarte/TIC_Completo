@@ -7,7 +7,7 @@ export default class EmailEmpresaDto
     public id_tipo_email: number;
     public str_email: string;
 
-    private returnMessage: ReturnMessage<null> = new ReturnMessage<null>(200, "Objeto válido", true);
+    private RM: ReturnMessage<null> = new ReturnMessage<null>(200, "Objeto válido", true);
 
     constructor ()
     {
@@ -17,7 +17,7 @@ export default class EmailEmpresaDto
         this.str_email = "";
     }
 
-    public isValid(isGet: boolean = false): ReturnMessage<null>
+    public isValid(action: string): ReturnMessage<null>
     {
         !isNaN(parseInt(`${this.id_email}`))
         ? this.id_email = parseInt(`${this.id_email}`)
@@ -31,18 +31,24 @@ export default class EmailEmpresaDto
         ? this.id_tipo_email = parseInt(`${this.id_tipo_email}`)
         : this.id_tipo_email = 0;
         
-        if(!isGet)
+        if(["POST"].indexOf(action) > -1)
         {
             if(this.id_empresa == 0)
-                this.returnMessage.updateStatus(400, "Número do Contato Inválido", false);
+                this.RM.updateStatus(400, "Identificador do Contato Inválido", false);
 
             if(this.id_tipo_email == 0)
-                this.returnMessage.updateStatus(400, "Número do Tipo de Email Inválido", false);
+                this.RM.updateStatus(400, "Identificador do Tipo Inválido", false);
 
             if(!this.str_email)
-                this.returnMessage.updateStatus(400, "Email Inválido", false);
+                this.RM.updateStatus(400, "Email Inválido", false);
+        }
+        
+        if(["DELETE"].indexOf(action) > -1)
+        {
+            if(this.id_email == 0)
+                this.RM.updateStatus(400, "Identificador Inválido", false);
         }
 
-        return this.returnMessage;
+        return this.RM;
     }
 }

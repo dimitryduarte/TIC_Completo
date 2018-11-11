@@ -4,14 +4,15 @@ CREATE OR REPLACE FUNCTION PR_EmailContatoPost (
 	vStrEmail		TEXT
 ) RETURNS JSON AS $$
 DECLARE
-	vResult INTEGER := 0;
+	vContent BOOLEAN := 'true';
+	vMessage TEXT := 'Email do Contato cadastrado';
 BEGIN
 
-	IF NOT EXISTS(SELECT 1
-				FROM public."tbEmailContato" AS ECONT
-				WHERE ECONT.id_contato = vIdContato
-					AND ECONT.id_tipo_email = vIdTipoEmail
-					AND ECONT.str_email = vStrEmail)
+	IF NOT EXISTS (SELECT 1
+					FROM public."tbEmailContato" AS ECONT
+					WHERE ECONT.id_contato = vIdContato
+						AND ECONT.id_tipo_email = vIdTipoEmail
+						AND ECONT.str_email = vStrEmail)
 		THEN
 
 			INSERT INTO public."tbEmailContato"
@@ -21,12 +22,14 @@ BEGIN
 
 		ELSE
 
-			vResult := 1;
+			vContent := 'false';
+			vMessage := 'Email do Contato inválido';
 			
 		END IF;
 	
 	RETURN json_build_object(
-		'result', vResult
+		'Content', vContent,
+		'Message', vMessage
 	);
 
 END;

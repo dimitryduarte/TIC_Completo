@@ -4,14 +4,15 @@ CREATE OR REPLACE FUNCTION PR_EmailEmpresaPost (
 	vStrEmail		TEXT
 ) RETURNS JSON AS $$
 DECLARE
-	vResult INTEGER := 0;
+	vContent BOOLEAN := 'true';
+	vMessage TEXT := 'Email da Empresa cadastrado';
 BEGIN
 
-	IF NOT EXISTS(SELECT 1
-				FROM public."tbEmailEmpresa" AS EEMP
-				WHERE EEMP.id_empresa = vIdEmpresa
-					AND EEMP.id_tipo_email = vIdTipoEmail
-					AND EEMP.str_email = vStrEmail)
+	IF NOT EXISTS (SELECT 1
+					FROM public."tbEmailEmpresa" AS EEMP
+					WHERE EEMP.id_empresa = vIdEmpresa
+						AND EEMP.id_tipo_email = vIdTipoEmail
+						AND EEMP.str_email = vStrEmail)
 		THEN
 
 			INSERT INTO public."tbEmailEmpresa"
@@ -21,12 +22,14 @@ BEGIN
 
 		ELSE
 
-			vResult := 1;
+			vContent := 'false';
+			vMessage := 'Email da Empresa inválido';
 			
 		END IF;
 	
 	RETURN json_build_object(
-		'result', vResult
+		'Content', vContent,
+		'Message', vMessage
 	);
 
 END;
