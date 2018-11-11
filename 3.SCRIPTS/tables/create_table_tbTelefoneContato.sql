@@ -17,7 +17,9 @@ CREATE TABLE public."tbTelefoneContato"
     CONSTRAINT "fk_id_tipo_telefone_tbTipoTelefone_tbTelefoneContato" FOREIGN KEY (id_tipo_telefone)
         REFERENCES public."tbTipoTelefone" (id_tipo_telefone) MATCH SIMPLE
         ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT uni_tbTelefoneContato UNIQUE
+        (id_contato, id_tipo_telefone, num_ddd_numero, num_numero)
 )
 WITH (
     OIDS = FALSE

@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION PR_EmpresaPost(
+CREATE OR REPLACE FUNCTION PR_EmpresaPost (
 	vStrNome 				TEXT	,
 	vNumCnpj 				BIGINT	,
 	vNumInscricaoEstadual 	BIGINT 	= NULL,
@@ -6,12 +6,21 @@ CREATE OR REPLACE FUNCTION PR_EmpresaPost(
 	vStrRazaoSocial 		TEXT 	= NULL
 ) RETURNS JSON AS $$
 DECLARE
-	vResult JSON;
+	vContent BOOLEAN := 'true';
+	vMessage TEXT := 'Empresa cadastrada';
 BEGIN
 
-	IF NOT EXISTS(SELECT 1
-				FROM public."tbEmpresa" AS EMP
-				WHERE EMP.num_cnpj = vNumCnpj)
+	IF EXISTS (SELECT 1
+                FROM public."tbEmpresa" AS EMP
+                WHERE EMP.num_cnpj = vNumCnpj)
+        THEN
+
+            vContent := 'false';
+            vMessage := 'CNPJ da Empresa já cadastrada';
+            
+        END IF;
+
+	IF (vContent)
 		THEN
 
 			INSERT INTO public."tbEmpresa"
@@ -19,25 +28,11 @@ BEGIN
 				VALUES
 					(vStrNome, vNumCnpj, vNumInscricaoEstadual, vNumInscricaoMunicipal, vStrRazaoSocial);
 
-			vResult := (
-				SELECT  COALESCE(json_agg(empresa), '[]')
-					FROM (
-						SELECT  EMP.id_empresa,
-								EMP.str_nome,
-								EMP.num_cnpj,
-								EMP.num_inscricao_estadual,
-								EMP.num_inscricao_municipal,
-								EMP.str_razao_social,
-								EMP.fg_status
-						FROM public."tbEmpresa" AS EMP
-						WHERE EMP.num_cnpj = vNumCnpj
-					) empresa
-			);
-			
 		END IF;
-	
+		
 	RETURN json_build_object(
-		'result', vResult
+		'Content', vContent,
+		'Message', vMessage
 	);
 
 END;

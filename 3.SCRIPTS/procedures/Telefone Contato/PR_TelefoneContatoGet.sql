@@ -3,11 +3,11 @@ CREATE OR REPLACE FUNCTION PR_TelefoneContatoGet (
 	vIdTelefone INTEGER = NULL
 ) RETURNS JSON AS $$
 DECLARE
-	vResult JSON;
-	vTotalLinhas INTEGER;
+	vList JSON;
+	vLines INTEGER;
 BEGIN
 
-	vResult := (
+	vList := (
 		SELECT  COALESCE(json_agg(telefone), '[]')
 			FROM (
 				SELECT  TCONT.id_telefone,
@@ -16,21 +16,25 @@ BEGIN
 						TCONT.num_ddd_numero,
 						TCONT.num_numero
 				FROM public."tbTelefoneContato" AS TCONT
-				WHERE (TCONT.id_contato = vIdContato OR vIdContato IS NULL)
-					AND (TCONT.id_telefone = vIdTelefone OR vIdTelefone IS NULL)
+				WHERE TCONT.id_telefone = vIdTelefone
+					OR TCONT.id_contato = vIdContato
+					OR (vIdTelefone IS NULL 
+						AND vIdContato IS NULL)
 			) telefone
 	);
 
-	vTotalLinhas := (
+	vLines := (
 		SELECT COUNT(*)
 			FROM public."tbTelefoneContato" AS TCONT
-			WHERE (TCONT.id_contato = vIdContato OR vIdContato IS NULL)
-				AND (TCONT.id_telefone = vIdTelefone OR vIdTelefone IS NULL)
+			WHERE TCONT.id_telefone = vIdTelefone
+				OR TCONT.id_contato = vIdContato
+				OR (vIdTelefone IS NULL 
+					AND vIdContato IS NULL)
 	);
 
 	RETURN json_build_object(
-		'result', vResult,
-		'totalLinhas', vTotalLinhas
+		'List', vList,
+		'Lines', vLines
 	);
 
 END;

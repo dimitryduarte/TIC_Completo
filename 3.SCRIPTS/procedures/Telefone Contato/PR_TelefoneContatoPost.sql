@@ -5,15 +5,16 @@ CREATE OR REPLACE FUNCTION PR_TelefoneContatoPost (
 	vNumNumero 		BIGINT
 ) RETURNS JSON AS $$
 DECLARE
-	vResult INTEGER := 0;
+	vContent BOOLEAN := 'true';
+	vMessage TEXT := 'Telefone do Contato cadastrado';
 BEGIN
 
-	IF NOT EXISTS(SELECT 1
-				FROM public."tbTelefoneContato" AS TCONT
-				WHERE TCONT.id_contato = vIdContato
-					AND TCONT.id_tipo_telefone = vIdTipoTelefone
-					AND TCONT.num_ddd_numero = vNumDddNumero
-					AND TCONT.num_numero = vNumNumero)
+	IF NOT EXISTS (SELECT 1
+					FROM public."tbTelefoneContato" AS TCONT
+					WHERE TCONT.id_contato = vIdContato
+						AND TCONT.id_tipo_telefone = vIdTipoTelefone
+						AND TCONT.num_ddd_numero = vNumDddNumero
+						AND TCONT.num_numero = vNumNumero)
 		THEN
 
 			INSERT INTO public."tbTelefoneContato"
@@ -23,12 +24,14 @@ BEGIN
 
 		ELSE
 
-			vResult := 1;
+			vContent := 'false';
+			vMessage := 'Telefone do Contato inválido';
 			
 		END IF;
 	
 	RETURN json_build_object(
-		'result', vResult
+		'Content', vContent,
+		'Message', vMessage
 	);
 
 END;

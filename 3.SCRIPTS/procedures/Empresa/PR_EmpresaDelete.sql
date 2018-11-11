@@ -2,26 +2,29 @@ CREATE OR REPLACE FUNCTION PR_EmpresaDelete (
 	vIdEmpresa INTEGER
 ) RETURNS JSON AS $$
 DECLARE
-    vResult INTEGER := 0;
+    vContent BOOLEAN := 'true';
+	vMessage TEXT := 'Empresa deletada';
 BEGIN
 
-    IF EXISTS(SELECT 1
+    IF EXISTS (SELECT 1
                 FROM public."tbEmpresa" AS EMP
                 WHERE EMP.id_empresa = vIdEmpresa)
         THEN
         
             UPDATE public."tbEmpresa"
-                SET fg_status = '0'
+                SET fg_status = 'false'
                 WHERE id_empresa = vIdEmpresa;
                 
         ELSE
         
-            vResult := 1;
+            vContent := 'false';
+            vMessage := 'Empresa não encontrada';
             
         END IF;
         
-    RETURN json_build_object(
-        'result', vResult
+    RETURN json_build_object (
+        'Content', vContent,
+        'Message', vMessage
     );
 
 END;

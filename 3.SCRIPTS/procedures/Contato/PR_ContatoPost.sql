@@ -7,12 +7,21 @@ CREATE OR REPLACE FUNCTION PR_ContatoPost (
 	vNumLideranca		SMALLINT 	= NULL
 ) RETURNS JSON AS $$
 DECLARE
-	vResult INTEGER := 0;
+	vContent BOOLEAN := 'true';
+    vMessage TEXT := 'Contato cadastrado';
 BEGIN
 
-	IF NOT EXISTS(SELECT 1
-				FROM public."tbContato" AS CONT
-				WHERE CONT.id_contato = vIdContato)
+	IF EXISTS (SELECT 1
+                    FROM public."tbContato" AS EMP
+                    WHERE EMP.id_contato = vIdContato)
+        THEN
+        
+            vContent := 'false';
+            vMessage := 'Contato já cadastrado';
+            
+        END IF;
+
+	IF (vContent)
 		THEN
 
 			INSERT INTO public."tbContato"
@@ -21,15 +30,12 @@ BEGIN
 				VALUES
 					(vIdContato, vStrObservacao, vNumCriatividade, vNumComunicacao, 
 						vNumColaboracao, vNumLideranca);
-
-		ELSE
-
-			vResult := 1;
-			
+	
 		END IF;
 	
-	RETURN json_build_object(
-		'result', vResult
+	RETURN json_build_object (
+		'Content', vContent,
+		'Message', vMessage
 	);
 
 END;

@@ -6,7 +6,7 @@ export default class TelefoneEmpresaService
 {
     public async Get(dto: TelefoneEmpresaDto): Promise<ReturnMessage<TelefoneEmpresaDto>>
     {
-        if(dto.isValid(true).Content)
+        if(dto.isValid("GET").Content)
             return await new TelefoneEmpresaRepository().Get(dto.id_empresa, dto.id_telefone);
         
         return new ReturnMessage<TelefoneEmpresaDto>(400, "O parâmetro informado não foi aceito", false);
@@ -14,7 +14,7 @@ export default class TelefoneEmpresaService
 
     public async Post(dto: TelefoneEmpresaDto): Promise<ReturnMessage<null>>
     {
-        let valid = dto.isValid();
+        let valid = dto.isValid("POST");
         if(valid.Content)
         {
             await this.Delete(dto);
@@ -27,7 +27,7 @@ export default class TelefoneEmpresaService
 
     public async Delete(dto: TelefoneEmpresaDto): Promise<ReturnMessage<null>>
     {
-        if(dto.isValid().Content)
+        if(dto.isValid("DELETE").Content)
             return await new TelefoneEmpresaRepository().Delete(dto.id_telefone);
         
         return new ReturnMessage<null>(400, "O parâmetro informado não foi aceito", false);

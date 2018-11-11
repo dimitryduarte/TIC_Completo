@@ -7,12 +7,21 @@ CREATE OR REPLACE FUNCTION PR_ContatoPut (
 	vNumLideranca		SMALLINT 	= NULL
 ) RETURNS JSON AS $$
 DECLARE
-	vResult INTEGER := 0;
+	vContent BOOLEAN := 'true';
+    vMessage TEXT := 'Contato alterado';
 BEGIN
 
-	IF EXISTS(SELECT 1
-				FROM public."tbContato" AS CONT
-				WHERE CONT.id_contato = vIdContato)
+	IF NOT EXISTS (SELECT 1
+                    FROM public."tbContato" AS EMP
+                    WHERE EMP.id_contato = vIdContato)
+        THEN
+        
+            vContent := 'false';
+            vMessage := 'Contato não encontrado';
+            
+        END IF;
+
+	IF (vContent)
 		THEN
 		
 			UPDATE public."tbContato"
@@ -24,15 +33,12 @@ BEGIN
 					num_lideranca 		= vNumLideranca
 				WHERE id_contato= vIdContato;
 				
-		ELSE
-		
-			vResult := 1;
-			
 		END IF;
 		
-	RETURN json_build_object(
-		'result', vResult
-	);
+	RETURN json_build_object (
+        'Content', vContent,
+        'Message', vMessage
+    );
 
 END;
 $$ LANGUAGE 'plpgsql';

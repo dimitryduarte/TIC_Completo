@@ -8,7 +8,7 @@ export default class TelefoneContatoDto
     public num_ddd_numero: number;
     public num_numero: number;
 
-    private returnMessage: ReturnMessage<null> = new ReturnMessage<null>(200, "Objeto válido", true);
+    private RM: ReturnMessage<null> = new ReturnMessage<null>(200, "Objeto válido", true);
 
     constructor ()
     {
@@ -19,7 +19,7 @@ export default class TelefoneContatoDto
         this.num_numero = 0;
     }
 
-    public isValid(isGet: boolean = false): ReturnMessage<null>
+    public isValid(action: string): ReturnMessage<null>
     {
         !isNaN(parseInt(`${this.id_telefone}`))
         ? this.id_telefone = parseInt(`${this.id_telefone}`)
@@ -41,21 +41,27 @@ export default class TelefoneContatoDto
         ? this.num_numero = parseInt(`${this.num_numero}`)
         : this.num_numero = 0;
         
-        if(!isGet)
+        if(["POST"].indexOf(action) > -1)
         {
             if(this.id_contato == 0)
-                this.returnMessage.updateStatus(400, "Número do Contato Inválido", false);
+                this.RM.updateStatus(400, "Identificador do Contato Inválido", false);
 
-            if(this.id_tipo_telefone == 0)
-                this.returnMessage.updateStatus(400, "Número do Tipo de Telefone Inválido", false);
+            else if(this.id_tipo_telefone == 0)
+                this.RM.updateStatus(400, "Identificador do Tipo Inválido", false);
 
-            if(this.num_ddd_numero == 0)
-                this.returnMessage.updateStatus(400, "DDD Telefone Inválido", false);
+            else if(this.num_ddd_numero == 0)
+                this.RM.updateStatus(400, "DDD Inválido", false);
 
-            if(this.num_numero == 0)
-                this.returnMessage.updateStatus(400, "Número Telefone Inválido", false);
+            else if(this.num_numero == 0)
+                this.RM.updateStatus(400, "Número Inválido", false);
         }
 
-        return this.returnMessage;
+        if(["DELETE"].indexOf(action) > -1)
+        {
+            if(this.id_telefone == 0)
+                this.RM.updateStatus(400, "Identificador Inválido", false);
+        }
+
+        return this.RM;
     }
 }

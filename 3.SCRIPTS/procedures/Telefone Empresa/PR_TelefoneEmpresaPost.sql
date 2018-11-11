@@ -5,15 +5,16 @@ CREATE OR REPLACE FUNCTION PR_TelefoneEmpresaPost (
 	vNumNumero 		BIGINT
 ) RETURNS JSON AS $$
 DECLARE
-	vResult INTEGER := 0;
+	vContent BOOLEAN := 'true';
+	vMessage TEXT := 'Telefone da Empresa cadastrado';
 BEGIN
 
-	IF NOT EXISTS(SELECT 1
-				FROM public."tbTelefoneEmpresa" AS TEMP
-				WHERE TEMP.id_empresa = vIdEmpresa
-					AND TEMP.id_tipo_telefone = vIdTipoTelefone
-					AND TEMP.num_ddd_numero = vNumDddNumero
-					AND TEMP.num_numero = vNumNumero)
+	IF NOT EXISTS (SELECT 1
+					FROM public."tbTelefoneEmpresa" AS TEMP
+					WHERE TEMP.id_empresa = vIdEmpresa
+						AND TEMP.id_tipo_telefone = vIdTipoTelefone
+						AND TEMP.num_ddd_numero = vNumDddNumero
+						AND TEMP.num_numero = vNumNumero)
 		THEN
 
 			INSERT INTO public."tbTelefoneEmpresa"
@@ -23,12 +24,14 @@ BEGIN
 
 		ELSE
 
-			vResult := 1;
+			vContent := 'false';
+			vMessage := 'Telefone da Empresa inválido';
 			
 		END IF;
 	
 	RETURN json_build_object(
-		'result', vResult
+		'Content', vContent,
+		'Message', vMessage
 	);
 
 END;

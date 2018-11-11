@@ -14,7 +14,7 @@ export default class ContatoDto
     public telefoneContato: TelefoneContatoDto[];
     public fg_status: boolean;
 
-    private returnMessage: ReturnMessage<null> = new ReturnMessage<null>(200, "Objeto válido", true);
+    private RM: ReturnMessage<null> = new ReturnMessage<null>(200, "Objeto válido", true);
 
     constructor()
     {
@@ -29,7 +29,7 @@ export default class ContatoDto
         this.fg_status = false;
     }
 
-    public isValid(isGet: boolean = false): ReturnMessage<null>
+    public isValid(action: string): ReturnMessage<null>
     {
         !isNaN(parseInt(`${this.id_contato}`))
         ? this.id_contato = parseInt(`${this.id_contato}`)
@@ -54,13 +54,13 @@ export default class ContatoDto
         this.fg_status
         ? this.fg_status = true
         : this.fg_status = false;
-        
-        if(!isGet)
+
+        if(["DELETE"].indexOf(action) > -1)
         {
             if(this.id_contato == 0)
-                this.returnMessage.updateStatus(400, "Número de Contato Inválido", false);
+                this.RM.updateStatus(400, "Identificador Inválido", false);
         }
 
-        return this.returnMessage;
+        return this.RM;
     }
 }

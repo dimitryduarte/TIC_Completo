@@ -28,13 +28,13 @@ export default class TipoOportunidadeDto
         if(["PUT", "DELETE"].indexOf(action) > -1)
         {
             if(this.id_tipo_oportunidade == 0)
-                this.RM.updateStatus(400, "Identificador de Tipo Telefone Inválido", false);
+                this.RM.updateStatus(400, "Identificador Inválido", false);
         }
 
         if(["POST", "PUT"].indexOf(action) > -1)
         {       
             if(!this.str_descricao)
-                this.RM.updateStatus(400, "Descrição de Tipo Telefone Inválida", false);
+                this.RM.updateStatus(400, "Descrição Inválida", false);
         }
 
         return this.RM;

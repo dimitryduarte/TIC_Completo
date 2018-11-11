@@ -10,7 +10,7 @@ export default class ContatoService
 {
     public async Get(dto: ContatoDto): Promise<ReturnMessage<ContatoDto>>
     {
-        if(dto.isValid(true).Content)
+        if(dto.isValid("GET").Content)
             return await new ContatoRepository().Get(dto.id_contato);
 
         return new ReturnMessage<ContatoDto>(400, "O parâmetro informado não foi aceito", false);
@@ -18,7 +18,7 @@ export default class ContatoService
 
     public async Post(dto: ContatoDto): Promise<ReturnMessage<null>>
     {
-        let valid = dto.isValid();
+        let valid = dto.isValid("POST");
         if (!valid.Content)
             return valid;
 
@@ -32,7 +32,7 @@ export default class ContatoService
 
     public async Put(dto: ContatoDto): Promise<ReturnMessage<null>>
     {
-        let valid = dto.isValid();
+        let valid = dto.isValid("PUT");
         if (!valid.Content)
             return valid;
 
@@ -46,7 +46,7 @@ export default class ContatoService
 
     public async Delete(dto: ContatoDto): Promise<ReturnMessage<null>>
     {
-        if(dto.isValid().Content)
+        if(dto.isValid("DELETE").Content)
             return await new ContatoRepository().Delete(dto.id_contato);
 
         return new ReturnMessage<null>(400, "O parâmetro informado não foi aceito", false);

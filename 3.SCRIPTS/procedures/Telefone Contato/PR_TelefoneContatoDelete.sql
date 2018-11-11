@@ -2,10 +2,11 @@ CREATE OR REPLACE FUNCTION PR_TelefoneContatoDelete (
 	vIdTelefone INTEGER
 ) RETURNS JSON AS $$
 DECLARE
-    vResult INTEGER := 0;
+    vContent BOOLEAN := 'true';
+	vMessage TEXT := 'Telefone do Contato deletado';
 BEGIN
 
-    IF EXISTS(SELECT 1
+    IF EXISTS (SELECT 1
                 FROM public."tbTelefoneContato" AS TCONT
                 WHERE TCONT.id_telefone = vIdTelefone)
         THEN
@@ -15,12 +16,14 @@ BEGIN
                 
         ELSE
         
-            vResult := 1;
+            vContent := 'false';
+            vMessage := 'Telefone do Contato não encontrado';
             
         END IF;
         
-    RETURN json_build_object(
-        'result', vResult
+    RETURN json_build_object (
+        'Content', vContent,
+        'Message', vMessage
     );
 
 END;

@@ -12,7 +12,7 @@ export default class EmpresaService
 {
     public async Get(dto: EmpresaDto): Promise<ReturnMessage<EmpresaDto>>
     {
-        if(dto.isValid(true).Content)
+        if(dto.isValid("GET").Content)
             return await new EmpresaRepository().Get(dto.id_empresa);
 
         return new ReturnMessage<EmpresaDto>(400, "O parâmetro informado não foi aceito", false);
@@ -20,26 +20,26 @@ export default class EmpresaService
 
     public async Post(dto: EmpresaDto): Promise<ReturnMessage<null>>
     {
-        let valid = dto.isValid();
+        let valid = dto.isValid("POST");
         if (!valid.Content)
             return valid;
 
         // Salva Informações Básicas do Empresa
         let rEmpresa = await new EmpresaRepository().Post(dto);
-        if(rEmpresa.Lista == null)
+        if(rEmpresa.List == null)
             return new ReturnMessage<null>(rEmpresa.StatusCode, rEmpresa.Message, false); 
 
-        if (rEmpresa.Lista.length == 0)
+        if (rEmpresa.List.length == 0)
             return new ReturnMessage<null>(rEmpresa.StatusCode, rEmpresa.Message, false);
 
-        Object.assign(dto, rEmpresa.Lista[0]);
+        Object.assign(dto, rEmpresa.List[0]);
 
         return await this.SaveAnotherInfo(dto);
     }
 
     public async Put(dto: EmpresaDto): Promise<ReturnMessage<null>>
     {
-        let valid = dto.isValid();
+        let valid = dto.isValid("PUT");
         if (!valid.Content)
             return valid;
 
@@ -53,7 +53,7 @@ export default class EmpresaService
 
     public async Delete(dto: EmpresaDto): Promise<ReturnMessage<null>>
     {
-        if(dto.isValid().Content)
+        if(dto.isValid("DELETE").Content)
             return await new EmpresaRepository().Delete(dto.id_empresa);
 
         return new ReturnMessage<null>(400, "O parâmetro informado não foi aceito", false);

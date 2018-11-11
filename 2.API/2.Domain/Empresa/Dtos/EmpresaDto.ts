@@ -16,7 +16,7 @@ export default class EmpresaDto
     public enderecoEmpresa: EnderecoEmpresaDto[];
     public fg_status: boolean;
 
-    private returnMessage: ReturnMessage<null> = new ReturnMessage<null>(200, "Objeto válido", true);
+    private RM: ReturnMessage<null> = new ReturnMessage<null>(200, "Objeto válido", true);
 
     constructor ()
     {
@@ -32,7 +32,7 @@ export default class EmpresaDto
         this.fg_status = false;
     }
 
-    public isValid(isGet: boolean = false): ReturnMessage<null>
+    public isValid(action: string): ReturnMessage<null>
     {
         !isNaN(parseInt(`${this.id_empresa}`))
         ? this.id_empresa = parseInt(`${this.id_empresa}`)
@@ -54,12 +54,21 @@ export default class EmpresaDto
         ? this.fg_status = true
         : this.fg_status = false;
         
-        if(!isGet)
+        if(["POST", "PUT"].indexOf(action) > -1)
         {
-            if(this.id_empresa == 0 && this.num_cnpj == 0)
-                this.returnMessage.updateStatus(400, "Identificador da Empresa Inválido", false);
+            if(this.num_cnpj == 0)
+                this.RM.updateStatus(400, "CNPJ Inválido", false);
+
+            if(!this.str_nome)
+                this.RM.updateStatus(400, "Nome Inválido", false);
         }
 
-        return this.returnMessage;
+        if(["PUT", "DELETE"].indexOf(action) > -1)
+        {
+            if(this.id_empresa == 0)
+                this.RM.updateStatus(400, "Identificador Inválido", false);
+        }
+
+        return this.RM;
     }
 }

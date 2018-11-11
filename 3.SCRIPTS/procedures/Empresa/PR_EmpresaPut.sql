@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION PR_EmpresaPut(
+CREATE OR REPLACE FUNCTION PR_EmpresaPut (
 	vIdEmpresa              INTEGER,
     vStrNome 				TEXT	,
 	vNumCnpj 				BIGINT	,
@@ -7,12 +7,31 @@ CREATE OR REPLACE FUNCTION PR_EmpresaPut(
 	vStrRazaoSocial 		TEXT 	= NULL
 ) RETURNS JSON AS $$
 DECLARE
-    vResult INTEGER := 0;
+    vContent BOOLEAN := 'true';
+    vMessage TEXT := 'Empresa alterada';
 BEGIN
 
-    IF EXISTS(SELECT 1
+    IF NOT EXISTS (SELECT 1
+                    FROM public."tbEmpresa" AS EMP
+                    WHERE EMP.id_empresa = vIdEmpresa)
+        THEN
+        
+            vContent := 'false';
+            vMessage := 'Empresa não encontrada';
+            
+        END IF;
+                
+    IF EXISTS (SELECT 1
                 FROM public."tbEmpresa" AS EMP
-                WHERE EMP.id_empresa = vIdEmpresa)
+                WHERE EMP.num_cnpj = vNumCnpj)
+        THEN
+
+            vContent := 'false';
+            vMessage := 'CNPJ da Empresa já cadastrada';
+            
+        END IF;
+
+    IF(vContent)
         THEN
         
             UPDATE public."tbEmpresa"
@@ -22,15 +41,12 @@ BEGIN
                     num_inscricao_municipal = vNumInscricaoMunicipal,
                     str_razao_social = vStrRazaoSocial
                 WHERE id_empresa = vIdEmpresa;
-                
-        ELSE
-        
-            vResult := 1;
             
         END IF;
         
-    RETURN json_build_object(
-        'result', vResult
+    RETURN json_build_object (
+        'Content', vContent,
+        'Message', vMessage
     );
 
 END;

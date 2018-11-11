@@ -2,11 +2,11 @@ CREATE OR REPLACE FUNCTION PR_ContatoGet (
 	vIdContato INTEGER = NULL
 ) RETURNS JSON AS $$
 DECLARE
-	vResult JSON;
-	vTotalLinhas INTEGER;
+	vList JSON;
+	vLines INTEGER;
 BEGIN
 
-	vResult := (
+	vList := (
 		SELECT  COALESCE(json_agg(contato), '[]')
 			FROM (
 				SELECT  CONT.id_contato,
@@ -17,21 +17,21 @@ BEGIN
 						CONT.num_lideranca,
 						CONT.fg_status
 				FROM public."tbContato" AS CONT
-				WHERE (CONT.id_contato = vIdContato 
-					OR (CONT.fg_status = '1' AND vIdContato IS NULL))
+				WHERE CONT.id_contato = vIdContato 
+					OR (CONT.fg_status = 'true' AND vIdContato IS NULL)
 			) contato
 	);
 
-	vTotalLinhas := (
+	vLines := (
 		SELECT COUNT(*)
 			FROM public."tbContato" AS CONT
-			WHERE (CONT.id_contato = vIdContato 
-				OR (CONT.fg_status = '1' AND vIdContato IS NULL))
+			WHERE CONT.id_contato = vIdContato 
+				OR (CONT.fg_status = 'true' AND vIdContato IS NULL)
 	);
 
 	RETURN json_build_object(
-		'result', vResult,
-		'totalLinhas', vTotalLinhas
+		'List', vList,
+		'Lines', vLines
 	);
 
 END;
