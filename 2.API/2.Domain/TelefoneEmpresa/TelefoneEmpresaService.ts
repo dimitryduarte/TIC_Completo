@@ -17,7 +17,8 @@ export default class TelefoneEmpresaService
         let valid = dto.isValid("POST");
         if(valid.Content)
         {
-            await this.Delete(dto);
+            if (dto.id_telefone != 0)
+                await this.Delete(dto, true);
 
             return await new TelefoneEmpresaRepository().Post(dto);
         }
@@ -25,12 +26,21 @@ export default class TelefoneEmpresaService
         return valid;
     }
 
-    public async Delete(dto: TelefoneEmpresaDto): Promise<ReturnMessage<null>>
+    public async Delete(dto: TelefoneEmpresaDto, isPost: boolean = false): Promise<ReturnMessage<null>>
     {
         let valid = dto.isValid("DELETE");
         if(valid.Content)
+        {
+            if (!isPost)
+            {
+                let rTelefone = await this.Get(dto);
+                if(rTelefone.List.length < 2)
+                    return new ReturnMessage<null>(400, "A Empresa deve possuir ao menos um Telefone cadastrado", false);
+            }
+
             return await new TelefoneEmpresaRepository().Delete(dto.id_telefone);
-        
+        }
+
         return valid;
     }
 }

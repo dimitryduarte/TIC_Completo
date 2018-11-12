@@ -17,7 +17,8 @@ export default class TelefoneContatoService
         let valid = dto.isValid("POST");
         if(valid.Content)
         {
-            await this.Delete(dto);
+            if (dto.id_telefone != 0)
+                await this.Delete(dto, true);
             
             return await new TelefoneContatoRepository().Post(dto);
         }
@@ -25,12 +26,21 @@ export default class TelefoneContatoService
         return valid;
     }
 
-    public async Delete(dto: TelefoneContatoDto): Promise<ReturnMessage<null>>
+    public async Delete(dto: TelefoneContatoDto, isPost: boolean = false): Promise<ReturnMessage<null>>
     {
         let valid = dto.isValid("DELETE");
         if(valid.Content)
+        {
+            if (!isPost)
+            {
+                let rTelefone = await this.Get(dto);
+                if(rTelefone.List.length < 2)
+                    return new ReturnMessage<null>(400, "O Contato deve possuir ao menos um Telefone cadastrado", false);
+            }
+
             return await new TelefoneContatoRepository().Delete(dto.id_telefone);
-        
+        }
+
         return valid;
     }
 }

@@ -18,7 +18,7 @@ export default class EmailEmpresaService
         if(valid.Content)
         {
             if(dto.id_email != 0)
-                await this.Delete(dto);
+                await this.Delete(dto, true);
 
             return await new EmailEmpresaRepository().Post(dto);
         }
@@ -26,12 +26,21 @@ export default class EmailEmpresaService
         return valid;
     }
 
-    public async Delete(dto: EmailEmpresaDto): Promise<ReturnMessage<null>>
+    public async Delete(dto: EmailEmpresaDto, isPost: boolean = false): Promise<ReturnMessage<null>>
     {
         let valid = dto.isValid("DELETE");
         if(valid.Content)
+        {
+            if (!isPost)
+            {
+                let rEmail = await this.Get(dto);
+                if(rEmail.List.length < 2)
+                    return new ReturnMessage<null>(400, "A Empresa deve possuir ao menos um E-mail cadastrado", false);
+            }
+
             return await new EmailEmpresaRepository().Delete(dto.id_email);
-        
+        }
+
         return valid;
     }
 }

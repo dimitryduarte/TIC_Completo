@@ -17,7 +17,8 @@ export default class EnderecoEmpresaService
         let valid = dto.isValid("POST");
         if(valid.Content)
         {
-            await this.Delete(dto);
+            if (dto.id_endereco != 0)
+                await this.Delete(dto, true);
 
             return await new EnderecoEmpresaRepository().Post(dto);
         }
@@ -25,12 +26,21 @@ export default class EnderecoEmpresaService
         return valid;
     }
 
-    public async Delete(dto: EnderecoEmpresaDto): Promise<ReturnMessage<null>>
+    public async Delete(dto: EnderecoEmpresaDto, isPost: boolean = false): Promise<ReturnMessage<null>>
     {
         let valid = dto.isValid("DELETE");
         if(valid.Content)
+        {
+            if (!isPost)
+            {
+                let rEndereco = await this.Get(dto);
+                if(rEndereco.List.length < 2)
+                    return new ReturnMessage<null>(400, "A Empresa deve possuir ao menos um Endereço cadastrado", false);
+            }
+
             return await new EnderecoEmpresaRepository().Delete(dto.id_endereco);
-        
+        }
+
         return valid;
     }
 }

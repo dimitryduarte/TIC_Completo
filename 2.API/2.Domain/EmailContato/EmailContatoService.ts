@@ -17,7 +17,8 @@ export default class EmailContatoService
         let valid = dto.isValid("POST");
         if(valid.Content)
         {
-            await this.Delete(dto);
+            if (dto.id_email != 0)
+                await this.Delete(dto);
             
             return await new EmailContatoRepository().Post(dto);
         }
@@ -25,12 +26,21 @@ export default class EmailContatoService
         return valid;
     }
 
-    public async Delete(dto: EmailContatoDto): Promise<ReturnMessage<null>>
+    public async Delete(dto: EmailContatoDto, isPost: boolean = false): Promise<ReturnMessage<null>>
     {
         let valid = dto.isValid("DELETE");
         if(valid.Content)
+        {
+            if (!isPost)
+            {
+                let rEmail = await this.Get(dto);
+                if(rEmail.List.length < 2)
+                    return new ReturnMessage<null>(400, "O Contato deve possuir ao menos um E-mail cadastrado", false);
+            }
+
             return await new EmailContatoRepository().Delete(dto.id_email);
-        
+        }
+
         return valid;
     }
 }
