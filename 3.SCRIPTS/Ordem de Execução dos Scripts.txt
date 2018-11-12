@@ -1,0 +1,18 @@
+01 - create_database.sql
+
+02 - tables/create_table_tbTipoTelefone.sql
+03 - tables/create_table_tbTipoOportunidade.sql
+04 - tables/create_table_tbTipoEndereco.sql
+05 - tables/create_table_tbTipoEmail.sql
+06 - tables/create_table_tbEmpresa.sql
+07 - tables/create_table_tbContato.sql
+08 - tables/create_table_tbEmailContato.sql
+09 - tables/create_table_tbEmailEmpresa.sql
+10 - tables/create_table_tbEnderecoEmpresa.sql
+11 - tables/create_table_tbTelefoneContato.sql
+12 - tables/create_table_tbTelefoneEmpresa.sql
+13 - tables/create_table_tbOportunidade.sql
+14 - tables/create_table_tbCandidatura.sql
+15 - tables/create_table_tbFiltro.sql
+
+16 - As procedures/functions pode executar em qualquer ordem
