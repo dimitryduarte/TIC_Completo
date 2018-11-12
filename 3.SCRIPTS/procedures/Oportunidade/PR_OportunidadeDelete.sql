@@ -2,26 +2,29 @@ CREATE OR REPLACE FUNCTION PR_OportunidadeDelete (
 	vIdOportunidade INTEGER
 ) RETURNS JSON AS $$
 DECLARE
-    vResult INTEGER := 0;
+    vContent BOOLEAN := 'true';
+	vMessage TEXT := 'Oportunidade deletada';
 BEGIN
 
-    IF EXISTS(SELECT 1
+    IF EXISTS (SELECT 1
                 FROM public."tbOportunidade" AS OPOR
                 WHERE OPOR.id_oportunidade = vIdOportunidade)
         THEN
         
             UPDATE public."tbOportunidade"
-                SET fg_status = '0'
+                SET fg_status = 'false'
                 WHERE id_oportunidade = vIdOportunidade;
                 
         ELSE
         
-            vResult := 1;
+            vContent := 'false';
+            vMessage := 'Oportunidade não encontrada';
             
         END IF;
         
-    RETURN json_build_object(
-        'result', vResult
+    RETURN json_build_object (
+        'Content', vContent,
+        'Message', vMessage
     );
 
 END;

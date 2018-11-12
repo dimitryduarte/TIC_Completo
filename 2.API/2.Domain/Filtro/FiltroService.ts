@@ -6,7 +6,7 @@ export default class FiltroService
 {
     public async Get(dto: FiltroDto): Promise<ReturnMessage<FiltroDto>>
     {
-        if(dto.isValid(true).Content)
+        if(dto.isValid("GET").Content)
             return await new FiltroRepository().Get(dto.id_filtro);
 
         return new ReturnMessage<FiltroDto>(400, "O parâmetro informado não foi aceito", false);
@@ -14,7 +14,7 @@ export default class FiltroService
 
     public async Post(dto: FiltroDto): Promise<ReturnMessage<null>>
     {
-        let valid = dto.isValid(true);
+        let valid = dto.isValid("POST");
         if(valid.Content)
             return await new FiltroRepository().Post(dto);
 
@@ -23,7 +23,7 @@ export default class FiltroService
 
     public async Put(dto: FiltroDto): Promise<ReturnMessage<null>>
     {
-        let valid = dto.isValid();
+        let valid = dto.isValid("PUT");
         if(valid.Content)
             return await new FiltroRepository().Put(dto);
 
@@ -32,9 +32,10 @@ export default class FiltroService
 
     public async Delete(dto: FiltroDto): Promise<ReturnMessage<null>>
     {
-        if(dto.isValid().Content)
+        let valid = dto.isValid("DELETE");
+        if(valid.Content)
             return await new FiltroRepository().Delete(dto.id_filtro);
 
-        return new ReturnMessage<null>(400, "O parâmetro informado não foi aceito", false);
+        return valid;
     }
 }

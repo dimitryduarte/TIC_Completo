@@ -44,8 +44,8 @@ export default class PostgreSQLConnection
             {
                 case "number": val[i] = this.pgPromise.as.number(val[i]); break;    // Number
                 case "string": val[i] = this.pgPromise.as.text(val[i]); break;      // Text
+                case "boolean": val[i] = this.pgPromise.as.bool(val[i]); break;     // Boolean
                 case "object": val[i] = this.pgPromise.as.date(val[i]); break;      // Date
-                case "boolean": val[i] = val[i] ? "1" : "0"; break;                 // Bit
                 default: break;
             }
         }

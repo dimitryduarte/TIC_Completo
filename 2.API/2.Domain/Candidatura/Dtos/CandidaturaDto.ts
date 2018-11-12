@@ -8,7 +8,7 @@ export default class CandidaturaDto
     public dat_cadastro: Date;
     public fg_status: boolean;
 
-    private returnMessage: ReturnMessage<null> = new ReturnMessage<null>(200, "Objeto válido", true);
+    private RM: ReturnMessage<null> = new ReturnMessage<null>(200, "Objeto válido", true);
 
     constructor ()
     {
@@ -19,7 +19,7 @@ export default class CandidaturaDto
         this.fg_status = false;
     }
 
-    public isValid(isGet: boolean = false): ReturnMessage<null>
+    public isValid(action: string): ReturnMessage<null>
     {
         !isNaN(parseInt(`${this.id_candidatura}`))
         ? this.id_candidatura = parseInt(`${this.id_candidatura}`)
@@ -36,21 +36,27 @@ export default class CandidaturaDto
         let date = new Date(this.dat_cadastro);
         date.getDay() && date.getMonth() && date.getFullYear()
         ? this.dat_cadastro = date
-        : this.dat_cadastro = new Date();
+        : this.dat_cadastro = new Date('2000-01-01');
 
         this.fg_status
         ? this.fg_status = true
         : this.fg_status = false;
 
-        if(!isGet)
+        if(["POST"].indexOf(action) > -1)
         {
             if(this.id_contato == 0)
-                this.returnMessage.updateStatus(400, "Número do Contato Inválido", false);
+                this.RM.updateStatus(400, "Identificador do Contato Inválido", false);
 
             if(this.id_oportunidade == 0)
-                this.returnMessage.updateStatus(400, "Número da Oportunidade Inválido", false);
+                this.RM.updateStatus(400, "Identificador da Oportunidade Inválido", false);
         }
 
-        return this.returnMessage;
+        if(["DELETE"].indexOf(action) > -1)
+        {
+            if(this.id_candidatura == 0)
+                this.RM.updateStatus(400, "Identificador Inválido", false);
+        }
+
+        return this.RM;
     }
 }

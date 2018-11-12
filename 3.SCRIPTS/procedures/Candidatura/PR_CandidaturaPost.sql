@@ -1,16 +1,16 @@
-CREATE OR REPLACE FUNCTION PR_CandidaturaPost(
+CREATE OR REPLACE FUNCTION PR_CandidaturaPost (
 	vIdOportunidade INTEGER,
 	vIdContato      INTEGER
 ) RETURNS JSON AS $$
 DECLARE
-	vContent INTEGER := 0;
-	vMensagem TEXT := 'Candidatura cadastrada';
+	vContent BOOLEAN := 'true';
+	vMessage TEXT := 'Candidatura cadastrada';
 BEGIN
 
 	IF NOT EXISTS (SELECT 1
-				FROM public."tbCandidatura" AS CAND
-				WHERE CAND.id_contato = vIdContato
-                    AND CAND.id_oportunidade = vIdOportunidade)
+					FROM public."tbCandidatura" AS CAND
+					WHERE CAND.id_contato = vIdContato
+						AND CAND.id_oportunidade = vIdOportunidade)
 		THEN
 
 			INSERT INTO public."tbCandidatura"
@@ -20,14 +20,14 @@ BEGIN
 
 		ELSE
 
-			vContent := 1;
-			vMensagem := 'O contato já está cadastrado';
+			vContent := 'false';
+			vMessage := 'Candidatura já cadastrado';
 			
 		END IF;
 	
-	RETURN json_build_object(
-		'content', vContent,
-		'mensagem', vMensagem
+	RETURN json_build_object (
+		'Content', vContent,
+		'Message', vMessage
 	);
 
 END;

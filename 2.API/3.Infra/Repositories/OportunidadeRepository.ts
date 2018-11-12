@@ -23,13 +23,14 @@ export default class OportunidadeRepository extends Connection
     public async Post(dto: OportunidadeDto): Promise<ReturnMessage<null>>
     {
         await this.addProcedure("PR_OportunidadePost");
-        await this.addParameter([ 
+        await this.addParameter([
+            dto.id_oportunidade,
             dto.id_empresa,
+            dto.num_vaga,
             dto.str_descricao,
-            dto.dat_inicio.toLocaleString(),
-            dto.dat_fim.toLocaleString(),
-            dto.mon_remuneracao,
-            dto.fg_supervisionado,
+            dto.dat_inicio.toLocaleDateString(),
+            dto.dat_fim.toLocaleDateString(),
+            dto.num_remuneracao,
             dto.id_tipo_oportunidade
         ]);
         return await this.executeNonQuery();
@@ -40,11 +41,12 @@ export default class OportunidadeRepository extends Connection
         await this.addProcedure("PR_OportunidadePut");
         await this.addParameter([ 
             dto.id_oportunidade,
+            dto.id_empresa,
+            dto.num_vaga,
             dto.str_descricao,
             dto.dat_inicio.toLocaleString(),
             dto.dat_fim.toLocaleString(),
-            dto.mon_remuneracao,
-            dto.fg_supervisionado,
+            dto.num_remuneracao,
             dto.id_tipo_oportunidade   
         ]);
 

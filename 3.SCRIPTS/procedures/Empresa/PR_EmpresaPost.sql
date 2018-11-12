@@ -30,7 +30,7 @@ BEGIN
 
 		END IF;
 		
-	RETURN json_build_object(
+	RETURN json_build_object (
 		'Content', vContent,
 		'Message', vMessage
 	);

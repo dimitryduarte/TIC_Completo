@@ -7,8 +7,8 @@ DECLARE
 BEGIN
 
 	IF NOT EXISTS (SELECT 1
-				FROM public."tbTipoOportunidade" AS TOPOR
-				WHERE TOPOR.str_descricao = vStrDescricao)
+					FROM public."tbTipoOportunidade" AS TOPOR
+					WHERE TOPOR.str_descricao = vStrDescricao)
 		THEN
 
 			INSERT INTO public."tbTipoOportunidade"

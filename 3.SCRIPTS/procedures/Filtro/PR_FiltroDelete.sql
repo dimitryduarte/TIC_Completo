@@ -1,11 +1,12 @@
-CREATE OR REPLACE FUNCTION PR_FiltroDelete(
+CREATE OR REPLACE FUNCTION PR_FiltroDelete (
 	vIdFiltro INTEGER
 ) RETURNS JSON AS $$
 DECLARE
-    vResult INTEGER := 0;
+    vContent BOOLEAN := 'true';
+	vMessage TEXT := 'Filtro deletado';
 BEGIN
 
-    IF EXISTS(SELECT 1
+    IF EXISTS (SELECT 1
                 FROM public."tbFiltro" AS FIL
                 WHERE FIL.id_filtro = vIdFiltro)
         THEN
@@ -15,12 +16,14 @@ BEGIN
                 
         ELSE
         
-            vResult := 1;
+            vContent := 'false';
+            vMessage := 'Filtro não encontrado';
             
         END IF;
         
-    RETURN json_build_object(
-        'result', vResult
+    RETURN json_build_object (
+        'Content', vContent,
+        'Message', vMessage
     );
 
 END;

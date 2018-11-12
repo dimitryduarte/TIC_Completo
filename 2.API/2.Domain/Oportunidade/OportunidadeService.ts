@@ -6,7 +6,7 @@ export default class OportunidadeService
 {
     public async Get(dto: OportunidadeDto): Promise<ReturnMessage<OportunidadeDto>>
     {
-        if(dto.isValid(true).Content)
+        if(dto.isValid("GET").Content)
             return await new OportunidadeRepository().Get(dto.id_empresa, dto.id_tipo_oportunidade);
 
         return new ReturnMessage<OportunidadeDto>(400, "O parâmetro informado não foi aceito", false);
@@ -14,7 +14,7 @@ export default class OportunidadeService
 
     public async Post(dto: OportunidadeDto): Promise<ReturnMessage<null>>
     {
-        let valid = dto.isValid();
+        let valid = dto.isValid("POST");
         if(valid.Content)
             return await new OportunidadeRepository().Post(dto);
 
@@ -23,7 +23,7 @@ export default class OportunidadeService
 
     public async Put(dto: OportunidadeDto): Promise<ReturnMessage<null>>
     {
-        let valid = dto.isValid();
+        let valid = dto.isValid("PUT");
         if(valid.Content)
             return await new OportunidadeRepository().Put(dto);
 
@@ -32,9 +32,10 @@ export default class OportunidadeService
 
     public async Delete(dto: OportunidadeDto): Promise<ReturnMessage<null>>
     {
-        if(dto.isValid(true).Content)
+        let valid = dto.isValid("DELETE");
+        if(valid.Content)
             return await new OportunidadeRepository().Delete(dto.id_oportunidade);
 
-        return new ReturnMessage<null>(400, "O parâmetro informado não foi aceito", false);
+        return valid;
     }
 }

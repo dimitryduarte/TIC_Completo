@@ -24,10 +24,10 @@ export default class FiltroRepository extends Connection
         await this.addProcedure("PR_FiltroPost");
         await this.addParameter([
             dto.id_contato,
-            dto.fg_supervisionado,
             dto.id_empresa ? dto.id_empresa : null,
-	        dto.mon_remuneracao,
-            dto.id_tipo_oportunidade
+            dto.id_tipo_oportunidade ? dto.id_tipo_oportunidade : null,
+            dto.num_remuneracao_max,
+            dto.num_remuneracao_min
         ]);
 
         return await this.executeNonQuery();
@@ -38,10 +38,11 @@ export default class FiltroRepository extends Connection
         await this.addProcedure("PR_FiltroPut");
         await this.addParameter([
             dto.id_filtro,
-            dto.fg_supervisionado,
+            dto.id_contato,
             dto.id_empresa ? dto.id_empresa : null,
-	        dto.mon_remuneracao,
-            dto.id_tipo_oportunidade
+            dto.id_tipo_oportunidade ? dto.id_tipo_oportunidade : null,
+            dto.num_remuneracao_max,
+            dto.num_remuneracao_min
         ]);
 
         return await this.executeNonQuery();

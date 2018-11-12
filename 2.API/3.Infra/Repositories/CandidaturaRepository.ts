@@ -25,8 +25,8 @@ export default class CandidaturaRepository extends Connection
     {
         await this.addProcedure("PR_CandidaturaPost");
         await this.addParameter([ 
-            dto.id_contato,
-            dto.id_oportunidade
+            dto.id_oportunidade,            
+            dto.id_contato
         ]);
 
         return await this.executeNonQuery();

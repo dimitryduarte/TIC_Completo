@@ -1,9 +1,9 @@
-CREATE OR REPLACE FUNCTION PR_CandidaturaDelete(
+CREATE OR REPLACE FUNCTION PR_CandidaturaDelete (
 	vIdCandidatura INTEGER
 ) RETURNS JSON AS $$
 DECLARE
-    vContent INTEGER := 0;
-    vMensagem TEXT := 'Candidatura deletada';
+    vContent BOOLEAN := 'true';
+    vMessage TEXT := 'Candidatura deletada';
 BEGIN
 
     IF EXISTS (SELECT 1
@@ -12,19 +12,19 @@ BEGIN
         THEN
         
             UPDATE public."tbCandidatura"
-                SET fg_status = '0'
+                SET fg_status = 'false'
                 WHERE id_candidatura = vIdCandidatura;
                 
         ELSE
         
-            vContent := 1;
-            vMensagem := 'Candidatura não encontrada';
+            vContent := 'false';
+            vMessage := 'Candidatura não encontrada';
 
         END IF;
         
-    RETURN json_build_object(
-        'content', vContent,
-        'mensagem', vMensagem
+    RETURN json_build_object (
+        'Content', vContent,
+        'Message', vMessage
     );
 
 END;

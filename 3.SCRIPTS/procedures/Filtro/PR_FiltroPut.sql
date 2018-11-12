@@ -1,34 +1,42 @@
-CREATE OR REPLACE FUNCTION PR_FiltroPut(
-	vIdFiltro           INTEGER	,
-	vFgSupervisionado 	BIT(1)	,
-    vIdEmpresa 			INTEGER = NULL,
-	vMonRemuneracao 	NUMERIC	= NULL,
-    vIdTipoOportunidade INTEGER = NULL
+CREATE OR REPLACE FUNCTION PR_FiltroPut (
+	vIdFiltro           INTEGER	        ,
+	vIdContato          INTEGER	        ,
+	vIdEmpresa 			INTEGER 		= NULL,
+    vIdTipoOportunidade INTEGER 		= NULL,
+	vNumRemuneracaoMax 	NUMERIC(9,2)	= NULL,
+	vNumRemuneracaoMin 	NUMERIC(9,2)	= NULL
 ) RETURNS JSON AS $$
 DECLARE
-    vResult INTEGER := 0;
+    vContent BOOLEAN := 'true';
+	vMessage TEXT := 'Filtro alterado';
 BEGIN
 
-    IF EXISTS(SELECT 1
-                FROM public."tbFiltro" AS EMP
-                WHERE EMP.id_filtro = vIdFiltro)
-        THEN
+    IF NOT EXISTS (SELECT 1
+					FROM public."tbFiltro" AS FIL
+					WHERE FIL.id_contato = vIdContato
+						AND FIL.id_empresa = vIdEmpresa
+						AND FIL.id_tipo_oportunidade = vIdTipoOportunidade
+						AND FIL.num_remuneracao_min = vNumRemuneracaoMin
+						AND FIL.num_remuneracao_max = vNumRemuneracaoMax)
+		THEN
         
             UPDATE public."tbFiltro"
                 SET id_empresa = vIdEmpresa,
-                    mon_remuneracao = vMonRemuneracao,
-                    fg_supervisionado = vFgSupervisionado,
-                    id_tipo_oportunidade = vIdTipoOportunidade
+					id_tipo_oportunidade = vIdTipoOportunidade,
+                    num_remuneracao_max = vNumRemuneracaoMax,
+                    num_remuneracao_min = vNumRemuneracaoMin
                 WHERE id_filtro = vIdFiltro;
                 
         ELSE
-        
-            vResult := 1;
-            
-        END IF;
-        
-    RETURN json_build_object(
-        'result', vResult
+
+			vContent := 'false';
+			vMessage := 'Filtro já cadastrado';
+			
+		END IF;
+	
+	RETURN json_build_object (
+        'Content', vContent,
+        'Message', vMessage
     );
 
 END;

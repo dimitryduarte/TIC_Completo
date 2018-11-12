@@ -1,34 +1,36 @@
-CREATE OR REPLACE FUNCTION PR_FiltroGet(
+CREATE OR REPLACE FUNCTION PR_FiltroGet (
 	vIdFiltro INTEGER = NULL
 ) RETURNS JSON AS $$
 DECLARE
-	vResult JSON;
-	vTotalLinhas INTEGER;
+	vList JSON;
+	vLines INTEGER;
 BEGIN
 
-	vResult := (
+	vList := (
 		SELECT  COALESCE(json_agg(filtro), '[]')
 			FROM (
-				SELECT  id_contato,
-                        id_filtro,
+				SELECT  id_filtro,
+						id_contato,
                         id_empresa,
-                        mon_remuneracao,
-                        fg_supervisionado,
-                        id_tipo_oportunidade
+                        id_tipo_oportunidade,
+                        num_remuneracao_max,
+                        num_remuneracao_min
 				FROM public."tbFiltro" AS FIL
-				WHERE (FIL.id_filtro = vIdFiltro OR vIdFiltro IS NULL)
+				WHERE FIL.id_filtro = vIdFiltro 
+					OR vIdFiltro IS NULL
 			) filtro
 	);
 
-	vTotalLinhas := (
+	vLines := (
 		SELECT COUNT(*)
 			FROM public."tbFiltro" AS FIL
-			WHERE (FIL.id_filtro = vIdFiltro OR vIdFiltro IS NULL)
+			WHERE FIL.id_filtro = vIdFiltro 
+				OR vIdFiltro IS NULL
 	);
 
-	RETURN json_build_object(
-		'result', vResult,
-		'totalLinhas', vTotalLinhas
+	RETURN json_build_object (
+		'List', vList,
+		'Lines', vLines
 	);
 
 END;

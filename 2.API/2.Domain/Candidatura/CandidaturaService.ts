@@ -6,7 +6,7 @@ export default class CandidaturaService
 {
     public async Get(dto: CandidaturaDto): Promise<ReturnMessage<CandidaturaDto>>
     {
-        if(dto.isValid(true).Content)
+        if(dto.isValid("GET").Content)
             return await new CandidaturaRepository().Get(dto.id_oportunidade, dto.id_candidatura, dto.id_candidatura);
         
         return new ReturnMessage<CandidaturaDto>(400, "O parâmetro informado não foi aceito", false);
@@ -14,7 +14,7 @@ export default class CandidaturaService
 
     public async Post(dto: CandidaturaDto): Promise<ReturnMessage<null>>
     {
-        let valid = dto.isValid();
+        let valid = dto.isValid("POST");
         if(valid.Content)
             return await new CandidaturaRepository().Post(dto);
 
@@ -23,9 +23,10 @@ export default class CandidaturaService
 
     public async Delete(dto: CandidaturaDto): Promise<ReturnMessage<null>>
     {
-        if(dto.isValid().Content)
+        let valid = dto.isValid("DELETE");
+        if(valid.Content)
             return await new CandidaturaRepository().Delete(dto.id_candidatura);
         
-        return new ReturnMessage<null>(400, "O parâmetro informado não foi aceito", false);
+        return valid;
     }
 }

@@ -7,8 +7,8 @@ DECLARE
 BEGIN
 
 	IF NOT EXISTS (SELECT 1
-				FROM public."tbTipoTelefone" AS TTEL
-				WHERE TTEL.str_descricao = vStrDescricao)
+					FROM public."tbTipoTelefone" AS TTEL
+					WHERE TTEL.str_descricao = vStrDescricao)
 		THEN
 
 			INSERT INTO public."tbTipoTelefone"

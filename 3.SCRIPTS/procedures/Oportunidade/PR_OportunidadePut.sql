@@ -1,38 +1,55 @@
 CREATE OR REPLACE FUNCTION PR_OportunidadePut (
     vIdOportunidade     INTEGER,
+    vIdEmpresa          INTEGER,
+    vNumVaga			SMALLINT,
 	vStrDescricao       TEXT,
     vDatInicio          DATE,
     vDatFim             DATE,
-    vMonRemuneracao     MONEY,
-    vFgSupervisionado   BIT(1),
+    vNumRemuneracao     NUMERIC(9,2),
     vIdTipoOportunidade INTEGER
 ) RETURNS JSON AS $$
 DECLARE
-    vResult INTEGER := 0;
+    vContent BOOLEAN := 'true';
+	vMessage TEXT := 'Oportunidade alterada';
 BEGIN
 
-    IF EXISTS(SELECT 1
-                FROM public."tbOportunidade" AS OPOR
-                WHERE OPOR.id_oportunidade = vIdOportunidade)
-        THEN
+    IF NOT EXISTS (SELECT 1
+					FROM public."tbEmpresa" AS EMP
+					WHERE EMP.id_empresa = vIdEmpresa)
+		THEN
+
+			vContent := 'false';
+            vMessage := 'Empresa não encontrada';
+
+		END IF;
+
+	IF NOT EXISTS (SELECT 1
+					FROM public."tbTipoOportunidade" AS TOPOR
+					WHERE TOPOR.id_tipo_oportunidade = vIdTipoOportunidade)
+		THEN
+
+			vContent := 'false';
+            vMessage := 'Tipo de Oportunidade não encontrado';
+
+		END IF;
+
+	IF (vContent)
+		THEN
         
             UPDATE public."tbOportunidade"
                 SET str_descricao           = vStrDescricao,
+                    num_vaga                = vNumVaga,
                     dat_inicio              = vDatInicio,
                     dat_fim                 = vDatFim,
-                    mon_remuneracao         = vMonRemuneracao,
-                    fg_supervisionado       = vFgSupervisionado,
+                    num_remuneracao         = vNumRemuneracao,
                     id_tipo_oportunidade    = vIdTipoOportunidade
                 WHERE id_oportunidade = vIdOportunidade;
                 
-        ELSE
-        
-            vResult := 1;
-            
         END IF;
         
-    RETURN json_build_object(
-        'result', vResult
+    RETURN json_build_object (
+        'Content', vContent,
+        'Message', vMessage
     );
 
 END;

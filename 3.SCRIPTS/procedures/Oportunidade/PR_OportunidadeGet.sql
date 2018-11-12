@@ -3,40 +3,44 @@ CREATE OR REPLACE FUNCTION PR_OportunidadeGet (
 	vIdOportunidade INTEGER = NULL
 ) RETURNS JSON AS $$
 DECLARE
-	vResult JSON;
-	vTotalLinhas INTEGER;
+	vList JSON;
+	vLines INTEGER;
 BEGIN
 
-	vResult := (
+	vList := (
 		SELECT  COALESCE(json_agg(oportunidade), '[]')
 			FROM (
 				SELECT  id_empresa,
 						id_oportunidade,
+                        id_tipo_oportunidade,
+						num_vaga,
                         str_descricao,
 						dat_inicio,
                         dat_fim,
-                        mon_remuneracao,
-                        fg_supervisionado,
-                        id_tipo_oportunidade,
+                        num_remuneracao,
                         fg_status
 				FROM public."tbOportunidade" AS OPOR
-				WHERE (OPOR.id_empresa = vIdEmpresa OR vIdEmpresa IS NULL)
-					AND (OPOR.id_oportunidade = vIdOportunidade OR vIdOportunidade IS NULL)
-					AND (fg_status = '1')
+				WHERE OPOR.id_oportunidade = vIdOportunidade
+					OR OPOR.id_empresa = vIdEmpresa 
+					OR (fg_status = 'true'
+						AND vIdEmpresa IS NULL 
+						AND vIdOportunidade IS NULL)
 			) oportunidade
 	);
 
-	vTotalLinhas := (
+	vLines := (
 		SELECT COUNT(*)
 			FROM public."tbOportunidade" AS OPOR
-			WHERE (OPOR.id_empresa = vIdEmpresa OR vIdEmpresa IS NULL)
-				AND (OPOR.id_oportunidade = vIdOportunidade OR vIdOportunidade IS NULL)
-				AND (fg_status = '1')
+			WHERE OPOR.id_oportunidade = vIdOportunidade
+					OR OPOR.id_empresa = vIdEmpresa 
+					OR (fg_status = 'true'
+						AND vIdEmpresa IS NULL 
+						AND vIdOportunidade IS NULL)
 	);
 
-	RETURN json_build_object(
-		'result', vResult,
-		'totalLinhas', vTotalLinhas
+	RETURN json_build_object (
+		'List', vList,
+		'Lines', vLines
 	);
 
 END;
