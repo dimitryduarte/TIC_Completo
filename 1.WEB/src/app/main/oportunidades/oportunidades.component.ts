@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import axios from 'axios';
+var cors = require('cors');
 import { Oportunidade } from './oportunidade.model';
 
 @Component({
@@ -9,34 +9,41 @@ import { Oportunidade } from './oportunidade.model';
   styleUrls: ['./oportunidades.component.css']
 })
 export class OportunidadesComponent implements OnInit {
-
- // oportunidades : any
- oportunidades = [
-   new Oportunidade('SMN','09/10/2018','Estágio Sup.','Diurno - 6hrs','Tecnologia','Não Candidatado'),
-   new Oportunidade('SMN','09/10/2018','Estágio Sup.','Diurno - 6hrs','Tecnologia','Não Candidatado'),
-   new Oportunidade('Irroba','11/11/2018','Estágio','Diurno - 6hrs','Tecnologia','Não Candidatado'),
-   new Oportunidade('Irroba','11/11/2018','Estágio','Diurno - 6hrs','Tecnologia','Não Candidatado'),
-   new Oportunidade('Audtax','15/12/2018','Estágio','Diurno - 6hrs','Tecnologia','Não Candidatado'),
-   new Oportunidade('Audtax','15/12/2018','Estágio','Diurno - 6hrs','Tecnologia','Candidatado')
- ]
-
- /*public empresa: String,
-                public dtafim: String,
-                public tipo: String,
-                public periodo: String,
-                public area: string,
-                public status: string*/
-
-  /*constructor(private http:HttpClient,
-              private router: Router) { }*/
   constructor() { }
 
   ngOnInit() {
-  /*  this.http.get('http://localhost:3000/estagio').subscribe(dados => {
-      this.oportunidades = dados;
-    })*/
+    axios.get('http://localhost:3001/api/oportunidade/get', {
+      headers:{
+        'authorization': 'aaa',
+      }
+    })
+    .then(async (response) => {
+      const oportunidades = response.data.list;
+      
+      const a = await this.pegarEmpresa(response.data.list.array);
+      this.pegarEmpresa(oportunidades.id_empresa);
+
+      oportunidades.map(item => item.empresa = a);
+      return oportunidades;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
   
-   
-
+  pegarEmpresa(idEmpresa){
+    axios.get('http://localhost:3001/api/empresa/get' + idEmpresa, {
+      headers:{
+        'authorization': 'aaa',
+      }
+    })
+    .then(async (response) => {
+      const oportunidades = response.data.list;
+      oportunidades.map(item => item.empresa = a);
+      return oportunidades;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
 }
