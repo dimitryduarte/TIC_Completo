@@ -8,6 +8,18 @@ app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(cors());
 
+app.use(function (req, res, next)
+{
+	res.setHeader("Access-Control-Allow-Origin", "*");
+	res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+	res.setHeader("Acess-Control-Allow-Headers", "Content-type");        
+	res.setHeader("Access-Control-Allow-Credentials", 'true');
+
+	res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization')
+	
+	next();
+});
+
 new Routes(app);
 
 app.listen(3001);
