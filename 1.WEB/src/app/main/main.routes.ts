@@ -11,6 +11,7 @@ import { EmpresaComponent } from "./empresa/empresa.component";
 import { VagaEditComponent } from "./vaga/vaga-edit/vaga-edit.component";
 import { CurriculoEditComponent } from "./curriculo/curriculo-edit/curriculo-edit.component";
 import { EmpresaEditComponent } from "./empresa/empresa-edit/empresa-edit.component";
+import { CandidatosComponent } from "./candidatos/candidatos.component";
 
 
 export const MAIN_ROUTES: Routes = [
@@ -25,7 +26,8 @@ export const MAIN_ROUTES: Routes = [
             { path: 'vaga-edit', component: VagaEditComponent },
             { path: 'curriculo-edit', component: CurriculoEditComponent },
             { path: 'empresa', component: EmpresaComponent },
-            { path: 'empresa-edit', component: EmpresaEditComponent }
+            { path: 'empresa-edit', component: EmpresaEditComponent },
+            { path: 'candidatos', component: CandidatosComponent}
         ]
     }
 ];
