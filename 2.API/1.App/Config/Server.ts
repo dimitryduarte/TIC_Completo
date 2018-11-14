@@ -5,7 +5,7 @@ import Routes from "./Routes";
 
 var app = express();
 app.use(json());
-app.use(urlencoded({ extended: true }));
+app.use(urlencoded({ extended: false }));
 app.use(cors());
 
 app.use(function (req, res, next)

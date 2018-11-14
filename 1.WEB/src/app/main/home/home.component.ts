@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import axios from 'axios';
+import $ from 'jquery';
 
 @Component({
   selector: 'app-home',
@@ -12,22 +12,21 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
 
-    axios.get('/api/candidatura/get', {
+    $.ajax('http://localhost:3001/api/contato/get', {
+      method: 'GET',
       headers: {
-        'Authorization': 'aaaa'
-      },
-      proxy: {
-        host: 'localhost',
-        port: 3001
+        'Authorization':'aaaa'
       }
     })
-    .then(function (res)
+    .done(function(data)
     {
-      console.log(res.data);
+      console.log("data: ");
+      console.log(data);
     })
-    .catch(function (err)
+    .fail(function(xml)
     {
-      console.log(err.message);
+      console.log("xml: ");
+      console.log(xml);
     });
 
   }
