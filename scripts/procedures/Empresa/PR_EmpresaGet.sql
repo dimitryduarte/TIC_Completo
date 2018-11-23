@@ -1,6 +1,6 @@
 CREATE OR REPLACE FUNCTION PR_EmpresaGet (
 	vIdEmpresa 	INTEGER = NULL,
-	vNumCnpj 	BIGINT	= NULL
+	vStrCnpj 	TEXT	= NULL
 ) RETURNS JSON AS $$
 DECLARE
 	vList JSON;
@@ -12,17 +12,20 @@ BEGIN
 			FROM (
 				SELECT  EMP.id_empresa,
 						EMP.str_nome,
-						EMP.num_cnpj,
+						EMP.str_cnpj,
 						EMP.num_inscricao_estadual,
 						EMP.num_inscricao_municipal,
 						EMP.str_razao_social,
+						EMP.str_atividade,
+						EMP.dat_acordo,
+						EMP.dat_alteracao,
 						EMP.fg_status
 				FROM public."tbEmpresa" AS EMP
 				WHERE EMP.id_empresa = vIdEmpresa
-					OR EMP.num_cnpj = vNumCnpj
+					OR EMP.str_cnpj = vStrCnpj
 					OR (EMP.fg_status = 'true' 
 							AND vIdEmpresa IS NULL
-							AND vNumCnpj IS NULL)
+							AND vStrCnpj IS NULL)
 			) empresa
 	);
 
@@ -30,10 +33,10 @@ BEGIN
 		SELECT COUNT(*)
 			FROM public."tbEmpresa" AS EMP
 			WHERE EMP.id_empresa = vIdEmpresa
-				OR EMP.num_cnpj = vNumCnpj
+				OR EMP.str_cnpj = vStrCnpj
 				OR (EMP.fg_status = 'true' 
 						AND vIdEmpresa IS NULL
-						AND vNumCnpj IS NULL)
+						AND vStrCnpj IS NULL)
 	);
 
 	RETURN json_build_object (

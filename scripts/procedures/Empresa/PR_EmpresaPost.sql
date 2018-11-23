@@ -1,9 +1,11 @@
 CREATE OR REPLACE FUNCTION PR_EmpresaPost (
 	vStrNome 				TEXT	,
-	vNumCnpj 				BIGINT	,
+	vStrCnpj 				TEXT	,
+	vDatAcordo				DATE	,
 	vNumInscricaoEstadual 	BIGINT 	= NULL,
 	vNumInscricaoMunicipal 	BIGINT 	= NULL,
-	vStrRazaoSocial 		TEXT 	= NULL
+	vStrRazaoSocial 		TEXT 	= NULL,
+	vStrAtividade			TEXT	= NULL
 ) RETURNS JSON AS $$
 DECLARE
 	vContent BOOLEAN := 'true';
@@ -12,7 +14,7 @@ BEGIN
 
 	IF EXISTS (SELECT 1
                 FROM public."tbEmpresa" AS EMP
-                WHERE EMP.num_cnpj = vNumCnpj)
+                WHERE EMP.str_cnpj = vStrCnpj)
         THEN
 
             vContent := 'false';
@@ -24,9 +26,11 @@ BEGIN
 		THEN
 
 			INSERT INTO public."tbEmpresa"
-				(str_nome, num_cnpj, num_inscricao_estadual, num_inscricao_municipal, str_razao_social)
+				(str_nome, str_cnpj, num_inscricao_estadual, num_inscricao_municipal, str_razao_social, 
+					str_atividade, dat_acordo, dat_alteracao)
 				VALUES
-					(vStrNome, vNumCnpj, vNumInscricaoEstadual, vNumInscricaoMunicipal, vStrRazaoSocial);
+					(vStrNome, vStrCnpj, vNumInscricaoEstadual, vNumInscricaoMunicipal, vStrRazaoSocial,
+						vStrAtividade, vDatAcordo, NOW());
 
 		END IF;
 		
